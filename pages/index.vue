@@ -2,31 +2,65 @@
   <div class="container">
     <div>
       <Logo />
-      <h1 class="title">speech-therapy-site</h1>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--grey"
-        >
-          GitHub
-        </a>
+      <div>
+        <b-form class="login" @submit="onSubmit" @submit.prevent="login">
+          <h1>Вход</h1>
+          <b-form-group
+            id="input-group-1"
+            label-for="input-login"
+            description="Формат логина lastname-12345"
+          >
+            <b-form-input
+              id="input-login"
+              v-model="form.login"
+              type="text"
+              required
+              placeholder="Введите логин"
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group id="input-group-1" label-for="input-password">
+            <b-form-input
+              id="input-password"
+              v-model="form.password"
+              type="password"
+              required
+              placeholder="Введите пароль"
+            ></b-form-input>
+          </b-form-group>
+
+          <b-button type="submit" variant="primary">Submit</b-button>
+          <b-button type="reset" variant="danger">Reset</b-button>
+        </b-form>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {}
+export default {
+  name: 'Login',
+  data() {
+    return {
+      form: {
+        login: '',
+        password: '',
+      },
+    }
+  },
+  methods: {
+    onSubmit(evt) {
+      evt.preventDefault()
+      alert(JSON.stringify(this.form))
+    },
+    login() {
+      // const { username, password } = this
+      // this.$store.dispatch(AUTH_REQUEST, { username, password }).then(() => {
+      //   this.$router.push('/')
+      // })
+    },
+  },
+}
 </script>
 
 <style>
