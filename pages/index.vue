@@ -7,13 +7,13 @@
           <h1>Вход</h1>
           <b-form-group
             id="input-group-1"
-            label-for="input-login"
+            label-for="input-email"
             description="Формат логина lastname-12345"
           >
             <b-form-input
               id="input-login"
-              v-model="form.login"
-              type="text"
+              v-model="form.email"
+              type="email"
               required
               placeholder="Введите логин"
             ></b-form-input>
@@ -38,26 +38,32 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   name: 'Login',
   data() {
     return {
       form: {
-        login: '',
+        email: '',
         password: '',
       },
     }
   },
   methods: {
+    ...mapActions({
+      authRequest: 'auth/AUTH_REQUEST',
+    }),
     onSubmit(evt) {
       evt.preventDefault()
       alert(JSON.stringify(this.form))
     },
     login() {
-      // const { username, password } = this
-      // this.$store.dispatch(AUTH_REQUEST, { username, password }).then(() => {
-      //   this.$router.push('/')
-      // })
+      const { email, password } = this.form
+      console.log(this.$store, this.authRequest, mapActions)
+      this.authRequest({ email, password }).then(() => {
+        this.$router.push('/')
+      })
     },
   },
 }
