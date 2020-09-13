@@ -10,13 +10,13 @@ export const getters = () => ({
   authStatus: (state) => state.status,
 })
 
-export const mutations = () => ({
+export const mutations = {
   AUTH_REQUEST: (state) => {
     state.status = 'loading'
   },
   AUTH_SUCCESS: (state, resp) => {
     state.status = 'success'
-    state.token = resp.token
+    state.token = resp.data.token
     state.hasLoadedOnce = true
   },
   AUTH_ERROR: (state) => {
@@ -26,28 +26,26 @@ export const mutations = () => ({
   AUTH_LOGOUT: (state) => {
     state.token = ''
   },
-})
+}
 
 export const actions = {
-  AUTH_REQUEST: ({ commit, dispatch }, user) => {
-    return new Promise((resolve, reject) => {
-      commit('AUTH_REQUEST')
-      this.$axios({ url: 'user/auth', data: user, method: 'POST' })
-        .then((resp) => {
-          localStorage.setItem('user-token', resp.token)
-          // Here set the header of your ajax library to the token value.
-          // example with axios
-          // axios.defaults.headers.common['Authorization'] = resp.token
-          commit('AUTH_SUCCESS', resp)
-          dispatch('USER_REQUEST')
-          resolve(resp)
-        })
-        .catch((err) => {
-          commit('AUTH_ERROR', err)
-          localStorage.removeItem('user-token')
-          reject(err)
-        })
+  async AUTH_REQUEST({ commit, dispatch }, user) {
+    await commit('AUTH_REQUEST')
+    const res = await this.$axios({
+      url: 'user/login',
+      data: user,
+      method: 'POST',
+    }).catch((err) => {
+      commit('AUTH_ERROR', err)
+      localStorage.removeItem('user-token')
+      return err
     })
+
+    localStorage.setItem('user-token', res.data.token)
+    commit('AUTH_SUCCESS', res)
+    dispatch('user/USER_REQUEST', null, { root: true })
+
+    return res
   },
   AUTH_LOGOUT: ({ commit }) => {
     return new Promise((resolve) => {

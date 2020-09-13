@@ -56,13 +56,13 @@ export default {
     }),
     onSubmit(evt) {
       evt.preventDefault()
-      alert(JSON.stringify(this.form))
+      // alert(JSON.stringify(this.form))
     },
     login() {
       const { email, password } = this.form
-      console.log(this.$store, this.authRequest, mapActions)
+      // console.log(this.$store, this.authRequest, mapActions)
       this.authRequest({ email, password }).then(() => {
-        this.$router.push('/')
+        this.$router.push('/room')
       })
     },
   },

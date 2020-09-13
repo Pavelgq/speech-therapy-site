@@ -63,7 +63,21 @@ export default {
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
-  axios: {},
+  axios: {
+    baseURL: 'http://localhost:3001/api/',
+    proxyHeaders: false,
+    credentials: false,
+    process: true,
+  },
+
+  // proxy: {
+  //   '/api': {
+  //     target: 'http://localhost::3000',
+  //     pathRewrite: {
+  //       '^/api': '/',
+  //     },
+  //   },
+  // },
   /*
    ** Content module configuration
    ** See https://content.nuxtjs.org/configuration
