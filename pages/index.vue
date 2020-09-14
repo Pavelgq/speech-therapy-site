@@ -5,17 +5,13 @@
       <div>
         <b-form class="login" @submit="onSubmit" @submit.prevent="login">
           <h1>Вход</h1>
-          <b-form-group
-            id="input-group-1"
-            label-for="input-email"
-            description="Формат логина lastname-12345"
-          >
+          <b-form-group id="input-group-1" label-for="input-email">
             <b-form-input
               id="input-login"
               v-model="form.email"
               type="email"
               required
-              placeholder="Введите логин"
+              placeholder="Введите email"
             ></b-form-input>
           </b-form-group>
 

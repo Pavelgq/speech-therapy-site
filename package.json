@@ -32,6 +32,7 @@
   "devDependencies": {
     "@nuxtjs/eslint-config": "^3.1.0",
     "@nuxtjs/eslint-module": "^2.0.0",
+    "@nuxtjs/vuetify": "^1.11.2",
     "@vue/test-utils": "^1.0.3",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.1.0",
@@ -42,6 +43,8 @@
     "eslint-plugin-prettier": "^3.1.4",
     "husky": "^4.2.5",
     "jest": "^26.1.0",
+    "less": "^3.12.2",
+    "less-loader": "^7.0.1",
     "lint-staged": "^10.2.11",
     "prettier": "^2.0.5",
     "vue-jest": "^3.0.4"

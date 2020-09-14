@@ -20,7 +20,7 @@ export const actions = {
       // if resp is unauthorized, logout, to
       dispatch('auth/AUTH_LOGOUT', null, { root: true })
     })
-    commit('USER_SUCCESS', res)
+    commit('USER_SUCCESS', res.data)
   },
 }
 
