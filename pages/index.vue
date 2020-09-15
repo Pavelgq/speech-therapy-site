@@ -1,35 +1,51 @@
 <template>
   <div class="container">
-    <div>
-      <Logo />
-      <div>
-        <b-form class="login" @submit="onSubmit" @submit.prevent="login">
-          <h1>Вход</h1>
-          <b-form-group id="input-group-1" label-for="input-email">
-            <b-form-input
-              id="input-login"
-              v-model="form.email"
-              type="email"
-              required
-              placeholder="Введите email"
-            ></b-form-input>
-          </b-form-group>
-
-          <b-form-group id="input-group-1" label-for="input-password">
-            <b-form-input
-              id="input-password"
-              v-model="form.password"
-              type="password"
-              required
-              placeholder="Введите пароль"
-            ></b-form-input>
-          </b-form-group>
-
-          <b-button type="submit" variant="primary">Submit</b-button>
-          <b-button type="reset" variant="danger">Reset</b-button>
-        </b-form>
-      </div>
-    </div>
+    <Logo />
+    <v-container align="center" justify="center">
+      <v-form
+        ref="form"
+        v-model="valid"
+        @submit="onSubmit"
+        @submit.prevent="login"
+      >
+        <h2>Вход</h2>
+        <v-text-field
+          v-model="form.email"
+          :rules="rules.emailRules"
+          label="E-mail"
+          required
+        ></v-text-field>
+        <v-text-field
+          v-model="form.password"
+          :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+          :rules="[rules.required, rules.min]"
+          :type="show1 ? 'text' : 'password'"
+          name="input-10-1"
+          label="Пароль"
+          hint="Минимум 7 символов"
+          counter
+          @click:append="show1 = !show1"
+        ></v-text-field>
+        <v-btn
+          rounded
+          :disabled="!valid"
+          color="normal"
+          class="mr-4"
+          @click="validate"
+        >
+          Войти
+        </v-btn>
+        <v-btn
+          rounded
+          color="red darken-3"
+          :disabled="!valid"
+          class="mr-4"
+          @click="reset"
+        >
+          Очистить
+        </v-btn>
+      </v-form>
+    </v-container>
   </div>
 </template>
 
@@ -43,6 +59,17 @@ export default {
       form: {
         email: '',
         password: '',
+      },
+      show1: false,
+      valid: true,
+      rules: {
+        emailRules: [
+          (v) => !!v || 'Введите email',
+          (v) => /.+@.+/.test(v) || 'Неверный формат email',
+        ],
+        required: (value) => !!value || 'Заполните все поля',
+        min: (v) => v.length >= 7 || 'Минимум 7 символов',
+        emailMatch: () => 'Email или пароль не совпадают',
       },
     }
   },
@@ -60,6 +87,15 @@ export default {
       this.authRequest({ email, password }).then(() => {
         this.$router.push('/room')
       })
+    },
+    validate() {
+      this.$refs.form.validate()
+      if (this.valid) {
+        this.login()
+      }
+    },
+    reset() {
+      this.$refs.form.reset()
     },
   },
 }
