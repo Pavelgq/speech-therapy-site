@@ -9,7 +9,6 @@ export default class Model {
     this.gameData = this.generate()
 
     this.answer = []
-    console.log(this)
     this.isTrue = this.isTrue.bind(this)
   }
 
@@ -45,30 +44,35 @@ export default class Model {
     switch (this.level) {
       case 1:
         return {
+          tasks: 5,
           width: 3,
           height: 3,
         }
 
       case 2:
         return {
-          width: 4,
+          tasks: 7,
+          width: 3,
           height: 3,
         }
 
       case 3:
         return {
-          width: 4,
+          tasks: 5,
+          width: 3,
           height: 4,
         }
 
       case 4:
         return {
-          width: 5,
+          tasks: 5,
+          width: 4,
           height: 4,
         }
 
       default:
         return {
+          tasks: 5,
           width: 3,
           height: 3,
         }
@@ -76,7 +80,6 @@ export default class Model {
   }
 
   isTrue(id) {
-    console.log(this)
     return this.gameWord.syllable.some((el) => {
       console.log(el, this.gameData[id])
       if (el === this.gameData[id]) {

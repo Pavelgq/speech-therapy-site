@@ -35,13 +35,7 @@
         >
           Войти
         </v-btn>
-        <v-btn
-          rounded
-          color="red darken-3"
-          :disabled="!valid"
-          class="mr-4"
-          @click="reset"
-        >
+        <v-btn rounded color="red darken-3" class="mr-4" @click="reset">
           Очистить
         </v-btn>
       </v-form>
@@ -68,7 +62,8 @@ export default {
           (v) => /.+@.+/.test(v) || 'Неверный формат email',
         ],
         required: (value) => !!value || 'Заполните все поля',
-        min: (v) => v.length >= 7 || 'Минимум 7 символов',
+        min: (v) =>
+          v !== undefined ? v.length >= 7 : '' || 'Минимум 7 символов',
         emailMatch: () => 'Email или пароль не совпадают',
       },
     }

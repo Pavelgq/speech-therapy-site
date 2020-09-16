@@ -22,7 +22,7 @@ export default class Playfield extends EventEmitter {
 
   create() {
     this.printCell()
-    playSound(this.model.gameWord.audio, false, 0.8, console.log)
+    playSound(this.model.gameWord.audio, false, 0.8, console.log).play()
   }
 
   printBorder() {
@@ -80,11 +80,9 @@ export default class Playfield extends EventEmitter {
         rect.on('pointerdown', () => this.select(rect))
         rect.on('pointerover', () => {
           rect.alpha = 0.5
-          console.log(rect)
         })
         rect.on('pointerout', () => {
           rect.alpha = 1
-          console.log(rect)
         })
         this.stage.addChild(rect)
         this.stage.addChild(text)
@@ -109,16 +107,14 @@ export default class Playfield extends EventEmitter {
     obj.off('pointerover')
     obj.off('pointerout')
     obj.off('pointerdown')
-
+    console.log(obj)
     if (this.model.isTrue(obj.id)) {
-      console.log('верно')
       obj.tint = '0x2a9c9d'
       if (this.model.isComplite()) {
         this.emit('compliteGame', { res: true })
         this.stage.removeChildren(0, this.stage.children.length)
       }
     } else {
-      console.log('не верно')
       obj.tint = '0xf36273'
       this.emit('compliteGame', { res: false })
       this.stage.removeChildren(0, this.stage.children.length)

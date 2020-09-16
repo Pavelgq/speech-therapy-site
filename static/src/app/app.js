@@ -10,7 +10,9 @@ const goodSound = require('../assets/audio/good.mp3')
 const badSound = require('../assets/audio/bad.mp3')
 
 export default class App {
-  constructor() {
+  constructor(container) {
+    this.container = container
+
     this.state = 'play'
 
     this.player = {
@@ -38,7 +40,6 @@ export default class App {
     })
 
     this.ticker = PIXI.Ticker.shared
-
     this.stage = new PIXI.Container()
 
     this.games = 4
@@ -49,15 +50,19 @@ export default class App {
   }
 
   init() {
-    document.body.appendChild(this.renderer.view)
+    this.container.appendChild(this.renderer.view)
 
     // this.render();
 
-    playSound(backSound, true, 0.3, console.log)
-
+    this.backSound = playSound(backSound, true, 0.3, console.log)
+    this.backSound.play()
     // this.on('compliteGame', this.complite)
 
     this.next()
+  }
+
+  exit() {
+    this.backSound.stop()
   }
 
   next() {
@@ -82,7 +87,8 @@ export default class App {
     )
     // todo
     game.playfield.dispatch('compliteGame', this.complite)
-    playSound(game.rules, false, 0.8, game.run)
+    const gameRules = playSound(game.rules, false, 0.8, game.run)
+    gameRules.play()
   }
 
   complite(obj) {
@@ -97,7 +103,7 @@ export default class App {
       const h2 = 'Молодец'
       this.printText(this.stage, h1, -1, 28)
       this.printText(this.stage, h2, 1, 28)
-      playSound(goodSound, false, 0.8, this.next)
+      playSound(goodSound, false, 0.8, this.next).play()
     } else {
       const b = new PIXI.Graphics()
       b.lineStyle(4, '0x2a9c9d', 1)
@@ -107,7 +113,7 @@ export default class App {
       const h2 = 'В следующий раз справишься'
       this.printText(this.stage, h1, -1, 28)
       this.printText(this.stage, h2, 1, 20)
-      playSound(badSound, false, 0.8, this.next)
+      playSound(badSound, false, 0.8, this.next).play()
     }
     this.task += 1
   }

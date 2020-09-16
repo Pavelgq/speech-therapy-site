@@ -10,7 +10,7 @@ const playSound = (path, loop, vol, func) => {
       func()
     },
   })
-  sound.play()
+  return sound
 }
 
 export default {

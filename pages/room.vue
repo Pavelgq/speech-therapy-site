@@ -1,41 +1,41 @@
 <template>
   <v-app>
-    <v-container fluid>
-      <v-col>
-        <v-row class="justify-end">
-          <h2 class="pa-2">{{ userInfo.login }}</h2>
-          <v-avatar>
-            <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
-          </v-avatar>
-        </v-row>
-      </v-col>
-    </v-container>
+    <v-container>
+      <v-row>
+        <v-col cols="12">
+          <v-row justify="end">
+            <h2 class="pa-3">{{ userName }}</h2>
+            <v-avatar class="ma-2">
+              <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
+            </v-avatar>
+          </v-row>
+        </v-col>
+      </v-row>
 
-    <v-main>
-      <v-container align-start justify-center fluid>
-        <v-row>
-          <v-spacer></v-spacer>
-          <v-col cols="4">
-            <ul class="info__list">
-              <li class="info__item">
-                <span class="info__title">Дней в игре: </span
-                ><span class="info__param">{{ userInfo.days }}</span>
-              </li>
-              <li class="info__item">
-                <span class="info__title">Пройдено уроков: </span
-                ><span class="info__param">{{ userInfo.lessons }}</span>
-              </li>
-              <li class="info__item">
-                <span class="info__title">Монет собрано: </span
-                ><span class="info__param">{{ userInfo.money }}</span>
-              </li>
-              <li class="info__item">
-                <span class="info__title">Время реакции: </span
-                ><span class="info__param">1</span>
-              </li>
-            </ul>
+      <v-main>
+        <v-row justify="center">
+          <v-col cols="6">
+            <v-row justify="center">
+              <ul class="info__list">
+                <li class="info__item">
+                  <span class="info__title">Дней в игре: </span
+                  ><span class="info__param">{{ userInfo.days }}</span>
+                </li>
+                <li class="info__item">
+                  <span class="info__title">Пройдено уроков: </span
+                  ><span class="info__param">{{ userInfo.lessons }}</span>
+                </li>
+                <li class="info__item">
+                  <span class="info__title">Монет собрано: </span
+                  ><span class="info__param">{{ userInfo.money }}</span>
+                </li>
+                <li class="info__item">
+                  <span class="info__title">Время реакции: </span
+                  ><span class="info__param">1</span>
+                </li>
+              </ul>
+            </v-row>
           </v-col>
-          <v-spacer></v-spacer>
         </v-row>
         <v-row class="justify-center">
           <v-btn
@@ -48,14 +48,14 @@
             Начать урок
           </v-btn>
         </v-row>
-      </v-container>
-    </v-main>
+      </v-main>
+    </v-container>
   </v-app>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
-import App from '~/static/src/app/app'
+
 export default {
   data() {
     return {
@@ -66,6 +66,9 @@ export default {
   computed: {
     userInfo() {
       return this.$store.state.user.profile
+    },
+    userName() {
+      return `${this.userInfo.firstName} ${this.userInfo.lastName}`
     },
   },
   created() {
@@ -83,8 +86,7 @@ export default {
     }),
     getInfo() {},
     start() {
-      const app = new App()
-      app.init()
+      this.$router.push('/game')
     },
   },
 }
