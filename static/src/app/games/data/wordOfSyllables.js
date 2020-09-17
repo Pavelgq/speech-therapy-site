@@ -47,6 +47,33 @@ const wordOfSyllables = {
     part: 'one',
     refresh: true,
   },
+  levels: [
+    {
+      tasks: 5,
+      width: 3,
+      height: 3,
+    },
+    {
+      tasks: 7,
+      width: 3,
+      height: 3,
+    },
+    {
+      tasks: 5,
+      width: 4,
+      height: 3,
+    },
+    {
+      tasks: 5,
+      width: 3,
+      height: 3,
+    },
+    {
+      tasks: 5,
+      width: 3,
+      height: 3,
+    },
+  ],
   words: [
     {
       type: 0,

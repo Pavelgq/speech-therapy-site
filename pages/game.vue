@@ -5,14 +5,30 @@
 </template>
 
 <script>
+// import { mapState } from 'vuex'
 import App from '~/static/src/app/app'
 export default {
+  props: {
+    user: Object,
+  },
   data() {
     return {}
   },
+  computed: {
+    // ...mapState('user', ['profile']),
+    userInfo: () => {
+      return this.$store.state.user.profile
+    },
+  },
+  watch: {
+    '$store.state.user.profile': () => {
+      console.log(this.$store.state.user.profile)
+    },
+  },
   mounted() {
     this.$refs.cont.focus()
-    const app = new App(this.$refs.root)
+    console.log(this.profile)
+    const app = new App(this.$refs.root, this.$store.state.user.profile)
     app.init()
   },
   methods: {

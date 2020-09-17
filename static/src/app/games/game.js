@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js'
+import GameScreen from '../screen/screen'
 import Playfield from './playfield'
 import Model from './model'
 
@@ -15,13 +16,14 @@ const gamesData = [
 ]
 
 export default class Game {
-  constructor(canvas, viewPort, level, ticker, gameNumber) {
+  constructor(canvas, viewPort, player, ticker, gameNumber) {
     this.canvas = canvas
     this.viewPort = viewPort
     this.stage = new PIXI.Container()
 
-    this.model = new Model(level, gamesData[gameNumber])
+    this.model = new Model(player.level, gamesData[gameNumber])
     this.playfield = new Playfield(this.model, viewPort, this.stage)
+    this.player = player
     this.ticker = ticker
 
     this.render = this.render.bind(this)
@@ -32,6 +34,14 @@ export default class Game {
   }
 
   run() {
+    this.screen = new GameScreen(
+      this.renderer,
+      this.viewPort,
+      this.stage,
+      this.player,
+      this.model
+    )
+    this.screen.render()
     this.playfield.create()
 
     this.ticker.remove()

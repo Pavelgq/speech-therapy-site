@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js'
 // import EventEmitter from './utils/eventEmmiter';
 import Game from './games/game'
+import Player from './player/player'
 import func from './utils/utils'
 
 const { playSound } = func
@@ -10,23 +11,25 @@ const goodSound = require('../assets/audio/good.mp3')
 const badSound = require('../assets/audio/bad.mp3')
 
 export default class App {
-  constructor(container) {
+  constructor(container, userData) {
     this.container = container
 
     this.state = 'play'
-
-    this.player = {
-      name: 'Иван Иванов',
-      level: 1,
-      exp: 0,
-      money: 0,
-      lesson: 1,
-    }
+    this.userData = userData
+    this.player = new Player(userData)
+    // {
+    //   name: 'Иван Иванов',
+    //   level: 1,
+    //   exp: 0,
+    //   money: 0,
+    //   lesson: 1,
+    // }
     this.task = 1
 
     this.viewPort = {
-      width: 400,
-      height: 400,
+      width: window.innerWidth,
+      height: window.innerWidth * (3 / 4),
+      ratio: 4 / 3,
     }
 
     this.renderer = PIXI.autoDetectRenderer({
@@ -47,16 +50,17 @@ export default class App {
     this.complite = this.complite.bind(this)
     this.next = this.next.bind(this)
     this.render = this.render.bind(this)
+    this.resize()
   }
 
   init() {
     this.container.appendChild(this.renderer.view)
-
+    window.onresize = (event) => {
+      this.resize()
+    }
     // this.render();
-
     this.backSound = playSound(backSound, true, 0.3, console.log)
-    this.backSound.play()
-    // this.on('compliteGame', this.complite)
+    // this.backSound.play()
 
     this.next()
   }
@@ -81,7 +85,7 @@ export default class App {
     const game = new Game(
       this.renderer,
       this.viewPort,
-      this.player.level,
+      this.player,
       this.ticker,
       id
     )
@@ -144,5 +148,18 @@ export default class App {
   gameLoop(delta) {
     // console.log(delta)
     this.render()
+  }
+
+  resize() {
+    let w, h
+    if (window.innerWidth / window.innerHeight >= this.viewPort.ratio) {
+      w = window.innerHeight * this.viewPort.ratio
+      h = window.innerHeight
+    } else {
+      w = window.innerWidth * 0.9
+      h = (window.innerWidth * 0.9) / this.viewPort.ratio
+    }
+    this.renderer.view.style.width = w + 'px'
+    this.renderer.view.style.height = h + 'px'
   }
 }

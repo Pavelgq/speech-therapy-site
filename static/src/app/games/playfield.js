@@ -39,7 +39,8 @@ export default class Playfield extends EventEmitter {
       x: spaceBetween,
       y: spaceBetween,
     }
-    const spaceFree = Math.min(this.width, this.height)
+    const width = (this.width * 2) / 3
+    const spaceFree = Math.min(width, this.height)
     const maxSideCubes = Math.max(
       this.model.cubes.width,
       this.model.cubes.height
@@ -54,7 +55,7 @@ export default class Playfield extends EventEmitter {
         2
     )
     const spaceAroundX = Math.floor(
-      (this.width -
+      (width -
         (size * this.model.cubes.width +
           spaceBetween * (this.model.cubes.width - 1))) /
         2
@@ -62,7 +63,7 @@ export default class Playfield extends EventEmitter {
 
     for (let i = 0; i < this.model.cubes.width; i++) {
       for (let j = 0; j < this.model.cubes.height; j++) {
-        position.x = spaceAroundX + (size + spaceBetween) * i
+        position.x = spaceAroundX + (size + spaceBetween) * i + this.width / 3
         position.y = spaceAroundY + (size + spaceBetween) * j
         const rect = new PIXI.Graphics()
         rect.lineStyle(2, '0xfdb078', 1)
@@ -103,11 +104,10 @@ export default class Playfield extends EventEmitter {
     return score
   }
 
-  select(obj) {
+  select(obj, func) {
     obj.off('pointerover')
     obj.off('pointerout')
     obj.off('pointerdown')
-    console.log(obj)
     if (this.model.isTrue(obj.id)) {
       obj.tint = '0x2a9c9d'
       if (this.model.isComplite()) {
