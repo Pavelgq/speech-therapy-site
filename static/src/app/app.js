@@ -60,7 +60,7 @@ export default class App {
     }
     // this.render();
     this.backSound = playSound(backSound, true, 0.3, console.log)
-    // this.backSound.play()
+    this.backSound.play()
 
     this.next()
   }
