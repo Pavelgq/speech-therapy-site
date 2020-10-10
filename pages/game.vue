@@ -6,7 +6,7 @@
 
 <script>
 // import { mapState } from 'vuex'
-import App from '~/static/src/app/app'
+import App from 'speech-therapy-games'
 export default {
   props: {
     user: Object,

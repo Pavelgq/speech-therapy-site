@@ -15,12 +15,12 @@ export default class GameScreen {
     b.drawRect(2, 2, this.viewPort.width - 4, this.viewPort.height - 4)
     this.stage.addChild(b)
 
-    const name = `${this.player.firtsName} ${this.player.lastName}`
+    const name = `${this.player.firstName} ${this.player.lastName}`
     const lesson = `Урок ${this.player.lesson + 1}`
     const task = `Задание ${this.task + 1}`
-    this.printText(this.stage, name, -1, this.viewPort.width / 40, 10, 10)
-    this.printText(this.stage, lesson, 1, this.viewPort.width / 60, 10, 60)
-    this.printText(this.stage, task, 1, this.viewPort.width / 60, 10, 110)
+    this.printText(this.stage, name, this.viewPort.width / 40, 10, 10)
+    this.printText(this.stage, lesson, this.viewPort.width / 60, 10, 60)
+    this.printText(this.stage, task, this.viewPort.width / 60, 10, 110)
 
     this.printRect(10, 80, 30, '0x2a9c9d', 30, this.viewPort.width / 4)
     this.printRect(15, 87.5, 15, '0x2affff', 15, 10)
@@ -28,7 +28,7 @@ export default class GameScreen {
     this.printRect(15, 137.5, 15, '0x2affff', 15, this.viewPort.width / 4 - 10)
   }
 
-  printText(stage, text, deltaH, fontSize, x, y) {
+  printText(stage, text, fontSize, x, y) {
     const textStyle = new PIXI.TextStyle({
       fontFamily: 'Arial',
       fontSize,
