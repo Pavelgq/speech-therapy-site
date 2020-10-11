@@ -5,8 +5,9 @@
 </template>
 
 <script>
-// import { mapState } from 'vuex'
 import App from 'speech-therapy-games'
+import { mapActions } from 'vuex'
+
 export default {
   props: {
     user: Object,
@@ -20,18 +21,28 @@ export default {
       return this.$store.state.user.profile
     },
   },
-  watch: {
-    '$store.state.user.profile': () => {
-      console.log(this.$store.state.user.profile)
-    },
-  },
+  // watch: {
+  //   '$store.state.user.profile': () => {
+  //     console.log(this.$store.state.user.profile)
+  //   },
+  // },
+  middleware: 'authenticated',
   mounted() {
     this.$refs.cont.focus()
     console.log(this.profile)
-    const app = new App(this.$refs.root, this.$store.state.user.profile)
-    app.init()
+    if (!this.$store.user) {
+      this.userRequest().then(() => {
+        console.log('sucess')
+        const app = new App(this.$refs.root, this.$store.state.user.profile)
+        app.init()
+      })
+    }
   },
+
   methods: {
+    ...mapActions({
+      userRequest: 'user/USER_REQUEST',
+    }),
     exit() {
       this.$router.push('/room')
     },

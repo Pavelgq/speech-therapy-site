@@ -40,11 +40,11 @@ export const actions = {
       localStorage.removeItem('user-token')
       return err
     })
-
-    localStorage.setItem('user-token', res.data.token)
-    commit('AUTH_SUCCESS', res)
-    dispatch('user/USER_REQUEST', null, { root: true })
-
+    if (res.data.token) {
+      localStorage.setItem('user-token', res.data.token)
+      commit('AUTH_SUCCESS', res)
+      dispatch('user/USER_REQUEST', null, { root: true })
+    }
     return res
   },
   AUTH_LOGOUT: ({ commit }) => {

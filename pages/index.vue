@@ -14,6 +14,7 @@
           :rules="rules.emailRules"
           label="E-mail"
           required
+          @keypress.enter.prevent="login"
         ></v-text-field>
         <v-text-field
           v-model="form.password"
@@ -25,6 +26,7 @@
           hint="Минимум 7 символов"
           counter
           @click:append="show1 = !show1"
+          @keypress.enter.prevent="login"
         ></v-text-field>
         <v-btn
           rounded
@@ -74,11 +76,9 @@ export default {
     }),
     onSubmit(evt) {
       evt.preventDefault()
-      // alert(JSON.stringify(this.form))
     },
     login() {
       const { email, password } = this.form
-      // console.log(this.$store, this.authRequest, mapActions)
       this.authRequest({ email, password }).then(() => {
         this.$router.push('/room')
       })
