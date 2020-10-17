@@ -1,48 +1,52 @@
 <template>
-  <div class="container">
-    <Logo />
-    <v-container align="center" justify="center">
-      <v-form
-        ref="form"
-        v-model="valid"
-        @submit="onSubmit"
-        @submit.prevent="login"
-      >
-        <h2>Вход</h2>
-        <v-text-field
-          v-model="form.email"
-          :rules="rules.emailRules"
-          label="E-mail"
-          required
-          @keypress.enter.prevent="login"
-        ></v-text-field>
-        <v-text-field
-          v-model="form.password"
-          :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-          :rules="[rules.required, rules.min]"
-          :type="show1 ? 'text' : 'password'"
-          name="input-10-1"
-          label="Пароль"
-          hint="Минимум 7 символов"
-          counter
-          @click:append="show1 = !show1"
-          @keypress.enter.prevent="login"
-        ></v-text-field>
-        <v-btn
-          rounded
-          :disabled="!valid"
-          color="normal"
-          class="mr-4"
-          @click="validate"
+  <v-container fill-height fluid>
+    <v-row :align="center" :justify="center">
+      <v-col>
+        <v-form
+          ref="form"
+          v-model="valid"
+          @submit="onSubmit"
+          @submit.prevent="login"
         >
-          Войти
-        </v-btn>
-        <v-btn rounded color="red darken-3" class="mr-4" @click="reset">
-          Очистить
-        </v-btn>
-      </v-form>
-    </v-container>
-  </div>
+          <h2>Вход</h2>
+          <v-text-field
+            v-model="form.email"
+            :rules="rules.emailRules"
+            label="E-mail"
+            required
+            @keypress.enter.prevent="login"
+          ></v-text-field>
+          <v-text-field
+            v-model="form.password"
+            :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+            :rules="[rules.required, rules.min]"
+            :type="show1 ? 'text' : 'password'"
+            name="input-10-1"
+            label="Пароль"
+            hint="Минимум 7 символов"
+            counter
+            @click:append="show1 = !show1"
+            @keypress.enter.prevent="login"
+          ></v-text-field>
+          <v-btn
+            rounded
+            :disabled="!valid"
+            color="normal"
+            class="mr-4"
+            @click="validate"
+          >
+            Войти
+          </v-btn>
+          <v-btn rounded color="red darken-3" class="mr-4" @click="reset">
+            Очистить
+          </v-btn>
+        </v-form>
+      </v-col>
+    </v-row>
+    <v-row>
+      <p class="font-weight-regular">{{ serverState }}</p>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -68,6 +72,7 @@ export default {
           v !== undefined ? v.length >= 7 : '' || 'Минимум 7 символов',
         emailMatch: () => 'Email или пароль не совпадают',
       },
+      serverState: '',
     }
   },
   methods: {
@@ -79,9 +84,14 @@ export default {
     },
     login() {
       const { email, password } = this.form
-      this.authRequest({ email, password }).then(() => {
-        this.$router.push('/room')
-      })
+      this.authRequest({ email, password })
+        .then(() => {
+          this.$router.push('/room')
+          this.serverState = ''
+        })
+        .catch((e) => {
+          this.serverState = 'Сервер не отвечает, попробуйте позже'
+        })
     },
     validate() {
       this.$refs.form.validate()
@@ -98,9 +108,10 @@ export default {
 
 <style>
 .container {
-  margin: 0 auto;
-  min-height: 100vh;
+  /* margin: 0 auto;
+  min-height: 100vh; */
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;

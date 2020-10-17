@@ -1,54 +1,11 @@
 <template>
   <v-app>
-    <v-container>
-      <v-row>
-        <v-col cols="12">
-          <v-row justify="end">
-            <h2 class="pa-3">{{ userName }}</h2>
-            <v-avatar class="ma-2">
-              <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
-            </v-avatar>
-          </v-row>
-        </v-col>
-      </v-row>
+    <v-container fill-height fluid>
+      <Navbar :user-name="userName" />
 
-      <v-main>
-        <v-row justify="center">
-          <v-col cols="6">
-            <v-row justify="center">
-              <ul class="info__list">
-                <li class="info__item">
-                  <span class="info__title">Дней в игре: </span
-                  ><span class="info__param">{{ userInfo.days }}</span>
-                </li>
-                <li class="info__item">
-                  <span class="info__title">Пройдено уроков: </span
-                  ><span class="info__param">{{ userInfo.lessons }}</span>
-                </li>
-                <li class="info__item">
-                  <span class="info__title">Монет собрано: </span
-                  ><span class="info__param">{{ userInfo.money }}</span>
-                </li>
-                <li class="info__item">
-                  <span class="info__title">Время реакции: </span
-                  ><span class="info__param">1</span>
-                </li>
-              </ul>
-            </v-row>
-          </v-col>
-        </v-row>
-        <v-row class="justify-center">
-          <v-btn
-            rounded
-            color="red darken-3"
-            :disabled="!valid"
-            class="mr-4"
-            @click="start"
-          >
-            Начать урок
-          </v-btn>
-        </v-row>
-      </v-main>
+      <v-content>
+        <UserInfo :user-info="userInfo" />
+      </v-content>
     </v-container>
   </v-app>
 </template>
@@ -60,6 +17,7 @@ export default {
   data() {
     return {
       valid: true,
+      user: this.$store.user,
     }
   },
 
@@ -70,16 +28,21 @@ export default {
     userName() {
       return `${this.userInfo.firstName} ${this.userInfo.lastName}`
     },
+    allDays() {
+      if (this.userInfo.days) {
+        return `${this.userInfo.days.length}`
+      }
+      return 0
+    },
   },
   created() {
     if (!this.$store.user) {
-      this.userRequest().then(() => {
+      this.userRequest().then((result) => {
         console.log('sucess')
       })
     }
   },
   middleware: 'authenticated',
-
   methods: {
     ...mapActions({
       userRequest: 'user/USER_REQUEST',
@@ -87,6 +50,9 @@ export default {
     getInfo() {},
     start() {
       this.$router.push('/game')
+    },
+    exit() {
+      this.$router.push('/')
     },
   },
 }
@@ -110,6 +76,10 @@ export default {
       margin-bottom: 10px;
       border: none;
     }
+  }
+
+  &__title {
+    padding-right: 10px;
   }
 }
 </style>

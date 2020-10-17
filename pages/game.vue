@@ -35,6 +35,7 @@ export default {
         console.log('sucess')
         const app = new App(this.$refs.root, this.$store.state.user.profile)
         app.init()
+        app.view.dispatch('exitGame', this.exit)
       })
     }
   },
