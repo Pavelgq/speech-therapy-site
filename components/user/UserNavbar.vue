@@ -6,12 +6,12 @@
 
     <v-list dense>
       <v-list-item justify="center">
-        <v-row class="justify-center">
+        <v-row justify="center">
           <v-btn
             rounded
             color="red darken-3"
             :disabled="!valid"
-            class="mr-4"
+            class="mb-2"
             @click="start"
           >
             Начать урок
@@ -40,13 +40,33 @@
 <script>
 export default {
   props: {
-    userName: String,
-    tabs: Array,
+    userName: {
+      type: String,
+      default: 'Noname',
+      require: true,
+    },
   },
   data() {
     return {
       valid: true,
-      selectedTab: this.tabs[0],
+      tabs: [
+        {
+          title: 'Достижения',
+          icon: '',
+          component: 'UserProgress',
+        },
+        {
+          title: 'Статистика',
+          icon: '',
+          component: 'UserStatistic',
+        },
+      ],
+      selectedTab: null,
+    }
+  },
+  mounted() {
+    if (!this.selectedTab) {
+      this.selectedTab = this.tabs[0]
     }
   },
   methods: {
@@ -55,8 +75,6 @@ export default {
     },
     changeComponent(tab) {
       this.selectedTab = tab
-      console.log(tab)
-      console.log(this, event)
       this.$emit('changeComponent', {
         name: tab.component,
       })

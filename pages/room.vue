@@ -1,10 +1,16 @@
 <template>
   <v-app>
     <v-container fill-height fluid>
-      <Navbar :user-name="userName" :tabs="nav" />
+      <UserNavbar :user-name="userName" @changeComponent="changeComponent" />
 
       <v-content>
-        <UserInfo :user-info="userInfo" :stats="stats" />
+        <keep-alive>
+          <Component
+            :is="currentComponent.name"
+            v-if="currentComponent.name"
+            :data="currentComponent.data"
+          ></Component>
+        </keep-alive>
       </v-content>
     </v-container>
   </v-app>
@@ -18,24 +24,11 @@ export default {
     return {
       valid: true,
       user: '',
-      nav: [
-        {
-          title: 'Информация',
-          icon: '',
-          acrive: true,
-        },
-        {
-          title: 'Статистика',
-          icon: '',
-          acrive: true,
-        },
-        {
-          title: 'Магазин',
-          icon: '',
-          acrive: true,
-        },
-      ],
       stats: [],
+      currentComponent: {
+        name: '',
+        data: {},
+      },
     }
   },
 
@@ -45,12 +38,6 @@ export default {
     },
     userName() {
       return `${this.userInfo.firstName} ${this.userInfo.lastName}`
-    },
-    allDays() {
-      if (this.userInfo.days) {
-        return `${this.userInfo.days.length}`
-      }
-      return 0
     },
   },
   created() {
@@ -67,36 +54,28 @@ export default {
       this.userRequest()
         .then(() => {
           this.user = this.$store.state.user.profile
-          this.getStats(this.user)
+          this.changeComponent({ name: 'UserProgress' })
         })
         .catch((e) => {
           console.log(e)
           this.exit()
         })
     },
-    getStats(data) {
-      this.stats = [
-        {
-          name: 'Пройдено уроков',
-          value: data.lessons,
-        },
-        {
-          name: 'Текущий уровень',
-          value: data.level,
-        },
-        {
-          name: 'Дней подряд',
-          value: this.allDays,
-        },
-        {
-          name: 'Получено опыта',
-          value: data.exp,
-        },
-        {
-          name: 'Заработано монет',
-          value: data.money,
-        },
-      ]
+    changeComponent(data) {
+      switch (data.name) {
+        case 'UserProgress':
+          this.currentComponent.name = () =>
+            import('../components/user/UserProgress.vue')
+          this.currentComponent.data = this.user
+          break
+        case 'UserStatistic':
+          this.currentComponent.name = () =>
+            import('../components/user/UserStatistic.vue')
+          this.currentComponent.data = this.user
+          break
+        default:
+          break
+      }
     },
     start() {
       this.$router.push('/game')
