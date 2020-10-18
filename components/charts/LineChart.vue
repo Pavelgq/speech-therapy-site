@@ -5,7 +5,7 @@ export default {
   name: 'LineChart',
   extends: Line,
 
-  props: ['chartdata', 'options'],
+  // props: ['chartdata', 'options'],
   data: () => ({
     chartdata: {
       labels: ['January', 'February'],
