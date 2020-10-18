@@ -31,12 +31,17 @@ export default {
     this.$refs.cont.focus()
     console.log(this.profile)
     if (!this.$store.user) {
-      this.userRequest().then(() => {
-        console.log('sucess')
-        const app = new App(this.$refs.root, this.$store.state.user.profile)
-        app.init()
-        app.view.dispatch('exitGame', this.exit)
-      })
+      this.userRequest()
+        .then(() => {
+          console.log('sucess')
+          const app = new App(this.$refs.root, this.$store.state.user.profile)
+          app.init()
+          app.view.dispatch('exitGame', this.exit)
+        })
+        .catch((e) => {
+          console.log(e)
+          this.exit()
+        })
     }
   },
 

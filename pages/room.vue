@@ -1,10 +1,10 @@
 <template>
   <v-app>
     <v-container fill-height fluid>
-      <Navbar :user-name="userName" />
+      <Navbar :user-name="userName" :tabs="nav" />
 
       <v-content>
-        <UserInfo :user-info="userInfo" />
+        <UserInfo :user-info="userInfo" :stats="stats" />
       </v-content>
     </v-container>
   </v-app>
@@ -17,7 +17,25 @@ export default {
   data() {
     return {
       valid: true,
-      user: this.$store.user,
+      user: '',
+      nav: [
+        {
+          title: 'Информация',
+          icon: '',
+          acrive: true,
+        },
+        {
+          title: 'Статистика',
+          icon: '',
+          acrive: true,
+        },
+        {
+          title: 'Магазин',
+          icon: '',
+          acrive: true,
+        },
+      ],
+      stats: [],
     }
   },
 
@@ -37,9 +55,7 @@ export default {
   },
   created() {
     if (!this.$store.user) {
-      this.userRequest().then((result) => {
-        console.log('sucess')
-      })
+      this.getInfo()
     }
   },
   middleware: 'authenticated',
@@ -47,7 +63,41 @@ export default {
     ...mapActions({
       userRequest: 'user/USER_REQUEST',
     }),
-    getInfo() {},
+    getInfo() {
+      this.userRequest()
+        .then(() => {
+          this.user = this.$store.state.user.profile
+          this.getStats(this.user)
+        })
+        .catch((e) => {
+          console.log(e)
+          this.exit()
+        })
+    },
+    getStats(data) {
+      this.stats = [
+        {
+          name: 'Пройдено уроков',
+          value: data.lessons,
+        },
+        {
+          name: 'Текущий уровень',
+          value: data.level,
+        },
+        {
+          name: 'Дней подряд',
+          value: this.allDays,
+        },
+        {
+          name: 'Получено опыта',
+          value: data.exp,
+        },
+        {
+          name: 'Заработано монет',
+          value: data.money,
+        },
+      ]
+    },
     start() {
       this.$router.push('/game')
     },

@@ -1,17 +1,6 @@
 <template>
   <v-navigation-drawer permanent left>
-    <template v-slot:prepend>
-      <v-list-item two-line>
-        <v-list-item-avatar>
-          <img src="../static/src/assets/images/avatar-men-1.jpg" />
-        </v-list-item-avatar>
-
-        <v-list-item-content>
-          <v-list-item-title>{{ userName }}</v-list-item-title>
-          <v-list-item-subtitle>В сети</v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
-    </template>
+    <UserLogo :user-name="userName" />
 
     <v-divider></v-divider>
 
@@ -29,31 +18,13 @@
           </v-btn>
         </v-row>
       </v-list-item>
-      <v-list-item>
+      <v-list-item v-for="tab in tabs" :key="tab.title" link>
         <v-list-item-icon>
-          <v-icon></v-icon>
+          <v-icon>{{ tab.icon }}</v-icon>
         </v-list-item-icon>
 
         <v-list-item-content>
-          <v-list-item-title>Информация</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-      <v-list-item>
-        <v-list-item-icon>
-          <v-icon></v-icon>
-        </v-list-item-icon>
-
-        <v-list-item-content>
-          <v-list-item-title>Статистика</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-      <v-list-item>
-        <v-list-item-icon>
-          <v-icon></v-icon>
-        </v-list-item-icon>
-
-        <v-list-item-content>
-          <v-list-item-title>Магазин</v-list-item-title>
+          <v-list-item-title>{{ tab.title }}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-list>
@@ -64,11 +35,17 @@
 export default {
   props: {
     userName: String,
+    tabs: Array,
   },
   data() {
     return {
       valid: true,
     }
+  },
+  methods: {
+    start() {
+      this.$router.push('/game')
+    },
   },
 }
 </script>

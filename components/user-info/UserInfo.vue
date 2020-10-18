@@ -1,38 +1,27 @@
 <template>
-  <v-row justify="center">
-    <v-col cols="8">
-      <v-row justify="center">
-        <ul class="info__list">
-          <li class="info__item">
-            <span class="info__title">Уровень: </span
-            ><span class="info__param">{{ userInfo.level }}</span>
-          </li>
-          <li class="info__item">
-            <span class="info__title">Без пропусков: </span
-            ><span class="info__param">{{ allDays }}</span>
-          </li>
-          <li class="info__item">
-            <span class="info__title">Пройдено уроков: </span
-            ><span class="info__param">{{ userInfo.lessons }}</span>
-          </li>
-          <li class="info__item">
-            <span class="info__title">Получено опыта: </span
-            ><span class="info__param">{{ userInfo.exp }}</span>
-          </li>
-          <li class="info__item">
-            <span class="info__title">Монет собрано: </span
-            ><span class="info__param">{{ userInfo.money }}</span>
-          </li>
-        </ul>
-      </v-row>
-    </v-col>
-  </v-row>
+  <v-simple-table>
+    <template v-slot:default>
+      <thead>
+        <tr>
+          <th class="text-left">Характеристика</th>
+          <th class="text-left">Показатель</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="item in stats" :key="item.name">
+          <td>{{ item.name }}</td>
+          <td>{{ item.value }}</td>
+        </tr>
+      </tbody>
+    </template>
+  </v-simple-table>
 </template>
 
 <script>
 export default {
   props: {
     userInfo: Object,
+    stats: Array,
   },
   data() {
     return {

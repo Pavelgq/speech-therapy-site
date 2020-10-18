@@ -1,6 +1,6 @@
 <template>
   <v-container fill-height fluid>
-    <v-row :align="center" :justify="center">
+    <v-row align="center" justify="center">
       <v-col>
         <v-form
           ref="form"
@@ -85,8 +85,12 @@ export default {
     login() {
       const { email, password } = this.form
       this.authRequest({ email, password })
-        .then(() => {
-          this.$router.push('/room')
+        .then((res) => {
+          if (res.data.role === 'admin') {
+            this.$router.push('/admin')
+          } else {
+            this.$router.push('/room')
+          }
           this.serverState = ''
         })
         .catch((e) => {
