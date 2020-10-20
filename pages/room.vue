@@ -23,7 +23,8 @@ export default {
   data() {
     return {
       valid: true,
-      user: '',
+      user: {},
+      lesson: {},
       stats: [],
       currentComponent: {
         name: '',
@@ -43,18 +44,31 @@ export default {
   created() {
     if (!this.$store.user) {
       this.getInfo()
+      this.getStat()
     }
   },
   middleware: 'authenticated',
   methods: {
     ...mapActions({
       userRequest: 'user/USER_REQUEST',
+      lessonRequest: 'statistic/LESSON_REQUEST',
     }),
     getInfo() {
       this.userRequest()
         .then(() => {
           this.user = this.$store.state.user.profile
           this.changeComponent({ name: 'UserProgress' })
+        })
+        .catch((e) => {
+          console.log(e)
+          this.exit()
+        })
+    },
+    getStat() {
+      this.lessonRequest()
+        .then(() => {
+          this.lessons = this.$store.state.statistic.lessons
+          this.changeComponent({ name: 'UserStatistic' })
         })
         .catch((e) => {
           console.log(e)
@@ -71,7 +85,7 @@ export default {
         case 'UserStatistic':
           this.currentComponent.name = () =>
             import('../components/user/UserStatistic.vue')
-          this.currentComponent.data = this.user
+          this.currentComponent.data = this.lessons
           break
         default:
           break
