@@ -27,7 +27,7 @@ export default {
       lesson: {},
       stats: [],
       currentComponent: {
-        name: '',
+        name: 'UserProgress',
         data: {},
       },
     }
@@ -44,6 +44,8 @@ export default {
   created() {
     if (!this.$store.user) {
       this.getInfo()
+    }
+    if (!this.$store.lesson) {
       this.getStat()
     }
   },
@@ -57,7 +59,7 @@ export default {
       this.userRequest()
         .then(() => {
           this.user = this.$store.state.user.profile
-          this.changeComponent({ name: 'UserProgress' })
+          // this.changeComponent({ name: 'UserProgress' })
         })
         .catch((e) => {
           console.log(e)
@@ -68,7 +70,7 @@ export default {
       this.lessonRequest()
         .then(() => {
           this.lessons = this.$store.state.statistic.lessons
-          this.changeComponent({ name: 'UserStatistic' })
+          // this.changeComponent({ name: 'UserStatistic' })
         })
         .catch((e) => {
           console.log(e)

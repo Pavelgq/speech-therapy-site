@@ -1,6 +1,10 @@
 <template>
   <v-container ref="cont">
-    <div ref="root" @keyup.esc="exit"></div>
+    <v-row justify="center">
+      <v-col justify="center">
+        <div ref="root" @keyup.esc="exit"></div>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
