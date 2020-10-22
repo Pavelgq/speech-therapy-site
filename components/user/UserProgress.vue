@@ -1,12 +1,17 @@
 <template>
   <v-container>
-    <v-row justify="center">
-      <v-col justify="center">
-        <div class="text-center title">Достижения</div>
+    <v-row justify="around">
+      <v-col>
+        <v-date-picker
+          v-model="dates"
+          multiple
+          no-title
+          scrollable
+        ></v-date-picker>
       </v-col>
-    </v-row>
-    <v-row justify="center">
-      <SimpleTable :fields="stats" />
+      <v-col>
+        <SimpleTable :fields="stats" :title="Достижения" />
+      </v-col>
     </v-row>
   </v-container>
 </template>
@@ -19,6 +24,7 @@ export default {
   },
   data() {
     return {
+      dates: ['10-11-2020'],
       stats: [
         {
           name: 'Пройдено уроков',
@@ -49,6 +55,13 @@ export default {
         return `${this.data.days.length}`
       }
       return 0
+    },
+    days() {
+      const mas = this.data.days.map((element) => {
+        const date = new Date(element)
+        return date.toISOString()
+      })
+      return mas
     },
   },
 }

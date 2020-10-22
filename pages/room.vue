@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-container fill-height fluid>
+    <v-container fill-height fluid app>
       <UserNavbar :user-name="userName" @changeComponent="changeComponent" />
 
       <v-content>

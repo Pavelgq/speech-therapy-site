@@ -1,5 +1,6 @@
 <template>
   <v-simple-table>
+    <div class="text-center title">{{ title }}</div>
     <template v-slot:default>
       <thead>
         <tr>
@@ -20,6 +21,7 @@
 <script>
 export default {
   props: {
+    title: String,
     fields: Array,
   },
 }
