@@ -14,7 +14,9 @@ import { mapActions } from 'vuex'
 
 export default {
   props: {
-    user: Object,
+    user: {
+      type: Object,
+    },
   },
   data() {
     return {}
@@ -37,13 +39,11 @@ export default {
     if (!this.$store.user) {
       this.userRequest()
         .then(() => {
-          console.log('sucess')
           const app = new App(this.$refs.root, this.$store.state.user.profile)
           app.init()
           app.view.dispatch('exitGame', this.exit)
         })
         .catch((e) => {
-          console.log(e)
           this.exit()
         })
     }

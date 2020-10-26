@@ -1,17 +1,21 @@
 <template>
   <v-app>
-    <v-container fill-height fluid app>
-      <UserNavbar :user-name="userName" @changeComponent="changeComponent" />
-
-      <v-content>
-        <keep-alive>
-          <Component
-            :is="currentComponent.name"
-            v-if="currentComponent.name"
-            :data="currentComponent.data"
-          ></Component>
-        </keep-alive>
-      </v-content>
+    <v-container fill-height class="pa-0" align-start fluid app>
+      <v-layout justify-start>
+        <UserNavbar :user-name="userName" @changeComponent="changeComponent" />
+        <v-content v-if="view">
+          <keep-alive>
+            <Component
+              :is="currentComponent.name"
+              v-if="currentComponent.name"
+              :data="currentComponent.data"
+            ></Component>
+          </keep-alive>
+        </v-content>
+        <v-content v-else>
+          <div>Выберите раздел...</div>
+        </v-content>
+      </v-layout>
     </v-container>
   </v-app>
 </template>
@@ -22,6 +26,7 @@ import { mapActions } from 'vuex'
 export default {
   data() {
     return {
+      view: false,
       valid: true,
       user: {},
       lesson: {},
@@ -62,7 +67,6 @@ export default {
           // this.changeComponent({ name: 'UserProgress' })
         })
         .catch((e) => {
-          console.log(e)
           this.exit()
         })
     },
@@ -73,11 +77,11 @@ export default {
           // this.changeComponent({ name: 'UserStatistic' })
         })
         .catch((e) => {
-          console.log(e)
           this.exit()
         })
     },
     changeComponent(data) {
+      this.view = true
       switch (data.name) {
         case 'UserProgress':
           this.currentComponent.name = () =>

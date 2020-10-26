@@ -1,7 +1,7 @@
 <template>
-  <v-container fill-height fluid>
-    <v-row align="center" justify="center">
-      <v-col>
+  <v-container fill-height align-content-center fluid>
+    <v-flex tag="section" grow shrink>
+      <v-row justify="center">
         <v-form
           ref="form"
           v-model="valid"
@@ -41,11 +41,11 @@
             Очистить
           </v-btn>
         </v-form>
-      </v-col>
-    </v-row>
-    <v-row>
-      <p class="font-weight-regular">{{ serverState }}</p>
-    </v-row>
+      </v-row>
+      <v-row justify="center">
+        <p class="font-weight-regular">{{ serverState }}</p>
+      </v-row>
+    </v-flex>
   </v-container>
 </template>
 

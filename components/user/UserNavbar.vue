@@ -64,11 +64,11 @@ export default {
       selectedTab: null,
     }
   },
-  mounted() {
-    if (!this.selectedTab) {
-      this.selectedTab = this.tabs[0]
-    }
-  },
+  // mounted() {
+  //   if (!this.selectedTab) {
+  //     this.selectedTab = this.tabs[0]
+  //   }
+  // },
   methods: {
     start() {
       this.$router.push('/game')
