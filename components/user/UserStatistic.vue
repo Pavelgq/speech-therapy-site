@@ -1,6 +1,6 @@
 <template>
   <client-only>
-    <v-container>
+    <v-container fluid>
       <v-row justify="center">
         <v-col justify="center">
           <div id="chart">

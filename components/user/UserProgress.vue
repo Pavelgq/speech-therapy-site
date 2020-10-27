@@ -1,6 +1,6 @@
 <template>
-  <v-container>
-    <v-row justify="around">
+  <v-container fluid>
+    <v-row justify="center">
       <v-col>
         <v-date-picker
           v-model="dates"
