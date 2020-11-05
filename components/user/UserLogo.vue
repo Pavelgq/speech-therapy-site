@@ -1,7 +1,7 @@
 <template v-slot:prepend>
   <v-list-item two-line>
     <v-list-item-avatar>
-      <img src="../../static/src/assets/images/avatar-men-1.jpg" />
+      <img src="../../static/assets/images/avatar-men-1.jpg" />
     </v-list-item-avatar>
 
     <v-list-item-content>

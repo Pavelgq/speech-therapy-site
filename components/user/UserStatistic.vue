@@ -1,18 +1,20 @@
 <template>
   <client-only>
-    <v-container fluid>
-      <v-row justify="center">
-        <v-col justify="center">
-          <div id="chart">
-            <VueApexCharts
-              type="line"
-              height="350"
-              :options="chartOptions"
-              :series="series"
-            ></VueApexCharts>
-          </div>
-        </v-col>
-      </v-row>
+    <v-container>
+      <v-flex tag="section" grow shrink>
+        <v-row justify="start">
+          <v-col justify="start">
+            <div id="chart">
+              <VueApexCharts
+                type="line"
+                width="450"
+                :options="chartOptions"
+                :series="series"
+              ></VueApexCharts>
+            </div>
+          </v-col>
+        </v-row>
+      </v-flex>
     </v-container>
   </client-only>
 </template>
@@ -29,10 +31,10 @@ export default {
     return {
       chartOptions: {
         chart: {
-          id: 'vuechart-example',
+          id: 'dataChart',
           type: 'line',
           stroke: {
-            width: 7,
+            width: 8,
             curve: 'smooth',
           },
           animations: {

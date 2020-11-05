@@ -1,18 +1,20 @@
 <template>
-  <v-container fluid>
-    <v-row justify="center">
-      <v-col>
-        <v-date-picker
-          v-model="dates"
-          multiple
-          no-title
-          scrollable
-        ></v-date-picker>
-      </v-col>
-      <v-col>
-        <SimpleTable :fields="stats" :title="Достижения" />
-      </v-col>
-    </v-row>
+  <v-container>
+    <v-flex tag="section" grow shrink>
+      <v-row justify="center" class="primary">
+        <v-col>
+          <v-date-picker
+            v-model="dates"
+            multiple
+            no-title
+            scrollable
+          ></v-date-picker>
+        </v-col>
+        <v-col>
+          <SimpleTable :fields="stats" :title="title" />
+        </v-col>
+      </v-row>
+    </v-flex>
   </v-container>
 </template>
 
@@ -25,6 +27,7 @@ export default {
   data() {
     return {
       dates: ['10-11-2020'],
+      title: 'Достижение',
       stats: [
         {
           name: 'Пройдено уроков',
