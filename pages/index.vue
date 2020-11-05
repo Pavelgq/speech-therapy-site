@@ -86,11 +86,7 @@ export default {
       const { email, password } = this.form
       this.authRequest({ email, password })
         .then((res) => {
-          if (res.data.role === 'admin') {
-            this.$router.push('/admin')
-          } else {
-            this.$router.push('/room')
-          }
+          this.$router.push('/room')
           this.serverState = ''
         })
         .catch((e) => {

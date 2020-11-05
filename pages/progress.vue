@@ -1,15 +1,20 @@
 <template>
   <v-container class="mt-2" align-start>
     <v-layout justify-start>
-      <v-content>
-        <UserProgress :data="user" />
-      </v-content>
+      <v-main>
+        <UserProgress v-if="status === 'success'" :data="profile" />
+        <v-progress-circular
+          v-else
+          indeterminate
+          color="primary"
+        ></v-progress-circular>
+      </v-main>
     </v-layout>
   </v-container>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 export default {
   layout: 'dashboard',
@@ -24,21 +29,22 @@ export default {
   },
 
   computed: {
+    ...mapState('user', ['status', 'profile']),
     userInfo() {
-      return this.$store.state.user.profile
+      return this.profile
     },
     userName() {
       return `${this.userInfo.firstName} ${this.userInfo.lastName}`
     },
   },
-  created() {
-    if (!this.$store.user) {
-      this.getInfo()
-    }
-    if (!this.$store.lesson) {
-      this.getStat()
-    }
-  },
+  // created() {
+  //   if (!this.$store.user) {
+  //     this.getInfo()
+  //   }
+  //   if (!this.$store.lesson) {
+  //     this.getStat()
+  //   }
+  // },
   middleware: 'authenticated',
   methods: {
     ...mapActions({
@@ -64,23 +70,6 @@ export default {
         .catch((e) => {
           this.exit()
         })
-    },
-    changeComponent(data) {
-      this.view = true
-      switch (data.name) {
-        case 'UserProgress':
-          this.currentComponent.name = () =>
-            import('../components/user/UserProgress.vue')
-          this.currentComponent.data = this.user
-          break
-        case 'UserStatistic':
-          this.currentComponent.name = () =>
-            import('../components/user/UserStatistic.vue')
-          this.currentComponent.data = this.lessons
-          break
-        default:
-          break
-      }
     },
     start() {
       this.$router.push('/game')

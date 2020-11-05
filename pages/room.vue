@@ -1,25 +1,25 @@
 <template>
   <v-container class="mt-2" align-start>
     <v-layout justify-start>
-      <v-content>
+      <v-main>
         <v-simple-table>
-          <!-- <div class="text-center title">{{ title }}</div> -->
+          <!-- <div class="text-center title">{{ isStatus }}</div> -->
           <template v-slot:default>
             <tbody>
-              <tr v-for="item in fields" :key="item.name">
+              <tr v-for="item in getFields" :key="item.name">
                 <td>{{ item.name }}</td>
                 <td>{{ item.value }}</td>
               </tr>
             </tbody>
           </template>
         </v-simple-table>
-      </v-content>
+      </v-main>
     </v-layout>
   </v-container>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 export default {
   layout: 'dashboard',
@@ -27,81 +27,54 @@ export default {
     return {
       view: false,
       valid: true,
-      user: {},
+      user: 0,
       lesson: {},
       stats: [],
-      fields: [
-        {
-          name: 'ФИО',
-          value: '',
-        },
-        {
-          name: 'Статус',
-          value: '',
-        },
-      ],
+      fields: [],
+      isProfile: false,
     }
   },
 
   computed: {
+    ...mapState('user', ['status', 'profile']),
+    isStatus() {
+      return this.$store.state.user.status
+    },
     userInfo() {
       return this.$store.state.user.profile
     },
     userName() {
       return `${this.userInfo.firstName} ${this.userInfo.lastName}`
     },
-  },
-  created() {
-    if (!this.$store.user) {
-      this.getInfo()
-    }
-    if (!this.$store.lesson) {
-      this.getStat()
-    }
+    role() {
+      return this.userInfo.role === 'user' ? 'Ученик' : 'Администратор'
+    },
+    getFields() {
+      return [
+        {
+          name: 'ФИО',
+          value: this.userName,
+        },
+        {
+          name: 'Статус',
+          value: this.role,
+        },
+        {
+          name: 'E-mail',
+          value: this.userInfo.email,
+        },
+        {
+          name: 'Дата регистрации',
+          value: new Date(this.userInfo.createdAt).toLocaleDateString(),
+        },
+      ]
+    },
   },
   middleware: 'authenticated',
   methods: {
     ...mapActions({
       userRequest: 'user/USER_REQUEST',
-      lessonRequest: 'statistic/LESSON_REQUEST',
     }),
-    getInfo() {
-      this.userRequest()
-        .then(() => {
-          this.user = this.$store.state.user.profile
-          // this.changeComponent({ name: 'UserProgress' })
-        })
-        .catch((e) => {
-          this.exit()
-        })
-    },
-    getStat() {
-      this.lessonRequest()
-        .then(() => {
-          this.lessons = this.$store.state.statistic.lessons
-          // this.changeComponent({ name: 'UserStatistic' })
-        })
-        .catch((e) => {
-          this.exit()
-        })
-    },
-    changeComponent(data) {
-      this.view = true
-      switch (data.name) {
-        case 'UserProgress':
-          this.currentComponent.name = () =>
-            import('../components/user/UserProgress.vue')
-          this.currentComponent.data = this.user
-          break
-        case 'UserStatistic':
-          this.currentComponent.name = () =>
-            import('../components/user/UserStatistic.vue')
-          this.currentComponent.data = this.lessons
-          break
-        default:
-          break
-      }
-    },
     start() {
       this.$router.push('/game')
     },

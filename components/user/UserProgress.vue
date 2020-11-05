@@ -8,6 +8,7 @@
             multiple
             no-title
             scrollable
+            readonly
           ></v-date-picker>
         </v-col>
         <v-col>
@@ -26,7 +27,7 @@ export default {
   },
   data() {
     return {
-      dates: ['10-11-2020'],
+      dates: this.days(),
       title: 'Достижение',
       stats: [
         {
@@ -62,7 +63,8 @@ export default {
     days() {
       const mas = this.data.days.map((element) => {
         const date = new Date(element)
-        return date.toISOString()
+        const str = date.toISOString()
+        return str.substring(0, 10)
       })
       return mas
     },

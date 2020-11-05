@@ -2,7 +2,7 @@
   <nav>
     <v-snackbar v-model="snackbar" :timeout="4000" top color="success">
       <span>Awesome! You added a new project.</span>
-      <v-btn color="white" flat @click="snackbar = false">Close</v-btn>
+      <v-btn color="white" text @click="snackbar = false">Close</v-btn>
     </v-snackbar>
 
     <v-app-bar app>
@@ -40,7 +40,7 @@
           </v-row>
         </v-list-item>
         <v-list-item
-          v-for="tab in tabs"
+          v-for="tab in currentTabs"
           :key="tab.title"
           router
           :to="tab.route"
@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 export default {
   data() {
@@ -72,21 +72,25 @@ export default {
           title: 'Профиль',
           icon: '',
           route: '/room',
+          access: 'all',
         },
         {
           title: 'Добавить ученика',
           icon: '',
-          route: '/',
+          route: '/add-user',
+          access: 'admin',
         },
         {
           title: 'Список учеников',
           icon: '',
-          route: '/',
+          route: '/all-users',
+          access: 'admin',
         },
         {
           title: 'Прогресc',
           icon: '',
           route: '/progress',
+          access: 'user',
         },
       ],
       selectedTab: {},
@@ -95,11 +99,19 @@ export default {
     }
   },
   computed: {
+    ...mapState('user', ['status', 'profile']),
     userInfo() {
-      return this.$store.state.user.profile
+      return this.profile
     },
     userName() {
       return `${this.userInfo.firstName} ${this.userInfo.lastName}`
+    },
+    currentTabs() {
+      return this.tabs.filter((el) => {
+        if (el.access === 'all' || el.access === this.profile.role) {
+          return true
+        }
+      })
     },
   },
   created() {
@@ -114,8 +126,7 @@ export default {
     getInfo() {
       this.userRequest()
         .then(() => {
-          this.user = this.$store.state.user.profile
-          // this.changeComponent({ name: 'UserProgress' })
+          this.user = this.profile
         })
         .catch((e) => {
           this.exit()
