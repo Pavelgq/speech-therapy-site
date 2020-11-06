@@ -1,21 +1,23 @@
 <template>
-  <v-container class="mt-2" align-start>
-    <v-layout justify-start>
-      <v-main>
-        <v-simple-table>
-          <!-- <div class="text-center title">{{ isStatus }}</div> -->
-          <template v-slot:default>
-            <tbody>
-              <tr v-for="item in getFields" :key="item.name">
-                <td>{{ item.name }}</td>
-                <td>{{ item.value }}</td>
-              </tr>
-            </tbody>
-          </template>
-        </v-simple-table>
-      </v-main>
-    </v-layout>
-  </v-container>
+  <v-content>
+    <v-container class="mt-2" fluid>
+      <v-flex xs12 sm6 color="primary">
+        <v-card>
+          <v-simple-table>
+            <!-- <div class="text-center title">{{ isStatus }}</div> -->
+            <template v-slot:default>
+              <tbody>
+                <tr v-for="item in getFields" :key="item.name">
+                  <td>{{ item.name }}</td>
+                  <td>{{ item.value }}</td>
+                </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
+        </v-card>
+      </v-flex>
+    </v-container>
+  </v-content>
 </template>
 
 <script>

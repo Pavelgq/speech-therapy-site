@@ -1,16 +1,18 @@
 <template>
-  <v-container class="mt-2" align-start>
-    <v-layout justify-start>
-      <v-main>
-        <UserProgress v-if="status === 'success'" :data="profile" />
-        <v-progress-circular
-          v-else
-          indeterminate
-          color="primary"
-        ></v-progress-circular>
-      </v-main>
-    </v-layout>
-  </v-container>
+  <v-content>
+    <v-container class="mt-2" align-start fluid>
+      <v-layout fill-height>
+        <v-flex xs12 sm6 offset-sm3>
+          <UserProgress v-if="status === 'success'" :data="profile" />
+          <v-progress-circular
+            v-else
+            indeterminate
+            color="primary"
+          ></v-progress-circular>
+        </v-flex>
+      </v-layout>
+    </v-container>
+  </v-content>
 </template>
 
 <script>

@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-flex tag="section" grow shrink>
+    <v-flex tag="section">
       <v-row justify="center" class="primary">
         <v-col>
           <v-date-picker
