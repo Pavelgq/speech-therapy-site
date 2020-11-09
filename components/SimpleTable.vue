@@ -1,5 +1,5 @@
 <template>
-  <v-simple-table>
+  <v-simple-table class="table">
     <div class="text-center title">{{ title }}</div>
     <template v-slot:default>
       <thead>
@@ -27,4 +27,10 @@ export default {
 }
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.table {
+  width: 290px;
+  max-width: 290px;
+  text-align: left;
+}
+</style>

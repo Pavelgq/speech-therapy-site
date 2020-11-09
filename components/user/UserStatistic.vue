@@ -1,22 +1,14 @@
 <template>
-  <client-only>
-    <v-container>
-      <v-flex tag="section" grow shrink>
-        <v-row justify="start">
-          <v-col justify="start">
-            <div id="chart">
-              <VueApexCharts
-                type="line"
-                width="450"
-                :options="chartOptions"
-                :series="series"
-              ></VueApexCharts>
-            </div>
-          </v-col>
-        </v-row>
-      </v-flex>
-    </v-container>
-  </client-only>
+  <v-layout justify-center wrap>
+    <v-flex pa-2 rounded grow shrink class="white">
+      <VueApexCharts
+        type="line"
+        width="450"
+        :options="chartOptions"
+        :series="series"
+      ></VueApexCharts>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>

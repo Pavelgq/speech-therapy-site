@@ -1,22 +1,18 @@
 <template>
-  <v-container>
-    <v-flex tag="section">
-      <v-row justify="center" class="primary">
-        <v-col>
-          <v-date-picker
-            v-model="dates"
-            multiple
-            no-title
-            scrollable
-            readonly
-          ></v-date-picker>
-        </v-col>
-        <v-col>
-          <SimpleTable :fields="stats" :title="title" />
-        </v-col>
-      </v-row>
+  <v-layout justify-center wrap>
+    <v-flex ma-2 grow shrink>
+      <v-date-picker
+        v-model="dates"
+        multiple
+        no-title
+        scrollable
+        readonly
+      ></v-date-picker>
     </v-flex>
-  </v-container>
+    <v-flex ma-2 grow shrink>
+      <SimpleTable :fields="stats" :title="title" />
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
@@ -39,8 +35,12 @@ export default {
           value: this.data.level,
         },
         {
-          name: 'Дней подряд',
+          name: 'Дней занимался',
           value: this.allDays(),
+        },
+        {
+          name: 'Непрерывно',
+          value: this.continuouslyDays(),
         },
         {
           name: 'Получено опыта',
@@ -60,6 +60,26 @@ export default {
       }
       return 0
     },
+    continuouslyDays() {
+      if (this.data.days) {
+        let count = 0
+        for (let i = this.data.days.length - 1; i > 0; i--) {
+          const now = this.data.days[i]
+          const prev = this.data.days[i]
+          if (
+            new Date(now) - new Date(prev) > 24 * 60 * 60 * 1000 &&
+            new Date(now) - new Date(prev) < 48 * 60 * 60 * 1000
+          ) {
+            count += 1
+          } else {
+            count = 1
+            break
+          }
+        }
+        return count
+      }
+      return 0
+    },
     days() {
       const mas = this.data.days.map((element) => {
         const date = new Date(element)
@@ -72,4 +92,4 @@ export default {
 }
 </script>
 
-<style></style>
+<style lang="less" scoped></style>

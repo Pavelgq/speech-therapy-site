@@ -1,18 +1,21 @@
 <template>
-  <v-content>
-    <v-container class="mt-2" align-start fluid>
-      <v-layout fill-height>
-        <v-flex xs12 sm6 offset-sm3>
-          <UserProgress v-if="status === 'success'" :data="profile" />
-          <v-progress-circular
-            v-else
-            indeterminate
-            color="primary"
-          ></v-progress-circular>
-        </v-flex>
-      </v-layout>
+  <v-main>
+    <v-container justify-center fluid>
+      <v-flex tag="section">
+        <v-row>
+          <v-col>
+            <UserProgress v-if="status === 'success'" :data="profile" />
+            <v-progress-circular v-else indeterminate></v-progress-circular>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <UserStatistic :data="lessons" />
+          </v-col>
+        </v-row>
+      </v-flex>
     </v-container>
-  </v-content>
+  </v-main>
 </template>
 
 <script>
@@ -32,6 +35,7 @@ export default {
 
   computed: {
     ...mapState('user', ['status', 'profile']),
+    ...mapState('statistic', ['status', 'lessons']),
     userInfo() {
       return this.profile
     },
@@ -39,14 +43,14 @@ export default {
       return `${this.userInfo.firstName} ${this.userInfo.lastName}`
     },
   },
-  // created() {
-  //   if (!this.$store.user) {
-  //     this.getInfo()
-  //   }
-  //   if (!this.$store.lesson) {
-  //     this.getStat()
-  //   }
-  // },
+  created() {
+    // if (!this.$store.user) {
+    //   this.getInfo()
+    // }
+    if (!this.$store.lesson) {
+      this.getStat()
+    }
+  },
   middleware: 'authenticated',
   methods: {
     ...mapActions({
@@ -64,14 +68,9 @@ export default {
         })
     },
     getStat() {
-      this.lessonRequest()
-        .then(() => {
-          this.lessons = this.$store.state.statistic.lessons
-          // this.changeComponent({ name: 'UserStatistic' })
-        })
-        .catch((e) => {
-          this.exit()
-        })
+      this.lessonRequest().catch((e) => {
+        this.exit()
+      })
     },
     start() {
       this.$router.push('/game')
