@@ -1,7 +1,7 @@
 <template>
   <v-main>
-    <v-flex v-for="item in usersList" :key="item.login">
-      <UserCard :data="item" />
+    <v-flex v-for="(value, name) in usersList" :key="name">
+      <UserCard :id="name" :data="value" />
     </v-flex>
   </v-main>
 </template>
