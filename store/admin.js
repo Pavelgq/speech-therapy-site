@@ -34,6 +34,7 @@ export const actions = {
       commit('ADMIN_ERROR')
       dispatch('auth/AUTH_LOGOUT', null, { root: true })
     })
+    console.log(res.data)
     commit('ADMIN_ALL_SUCCESS', res.data)
   },
 }
