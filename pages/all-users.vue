@@ -23,6 +23,7 @@ export default {
   created() {
     this.getUsers()
   },
+  // middleware: 'refresh',
   methods: {
     ...mapActions({
       allUser: 'admin/USER_ALL',

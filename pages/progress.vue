@@ -51,7 +51,7 @@ export default {
       this.getStat()
     }
   },
-  middleware: 'authenticated',
+  middleware: 'not-authenticated',
   methods: {
     ...mapActions({
       userRequest: 'user/USER_REQUEST',

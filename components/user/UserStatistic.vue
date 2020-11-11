@@ -67,7 +67,7 @@ export default {
     getData() {
       for (const key in this.data) {
         const lesson = this.data[key]
-
+        console.log(lesson, 'урок')
         const day = new Date(lesson.date)
         for (let i = 0; i < lesson.tasks.length; i++) {
           const task = lesson.tasks[i]

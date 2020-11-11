@@ -1,10 +1,11 @@
 import Vue from 'vue'
 
-export const state = () => ({ status: '', lessons: {} })
+export const state = () => ({ status: '', lessons: {}, currentLessons: {} })
 
 export const getters = {
   getLessons: (state) => state.lessons,
-  isProfileLoaded: (state) => !!state.profile.name,
+  getCurrentLessons: (state) => state.currentLessons,
+  isLessonsLoaded: (state) => !!state.lessons,
 }
 
 export const actions = {
@@ -21,6 +22,20 @@ export const actions = {
     })
     commit('LESSON_SUCCESS', res.data)
   },
+  async LESSON_USER_REQUEST({ commit, dispatch }, id) {
+    await commit('LESSON_REQUEST')
+    const token = localStorage.getItem('user-token')
+    const res = await this.$axios({
+      url: 'lesson/current',
+      data: id,
+      method: 'post',
+      headers: { Authorization: `${token}` },
+    }).catch(() => {
+      commit('LESSON_ERROR')
+      dispatch('auth/AUTH_LOGOUT', null, { root: true })
+    })
+    commit('LESSON_DATA_SUCCESS', res.data)
+  },
 }
 
 export const mutations = {
@@ -30,6 +45,10 @@ export const mutations = {
   LESSON_SUCCESS: (state, resp) => {
     state.status = 'success'
     Vue.set(state, 'lessons', resp)
+  },
+  LESSON_DATA_SUCCESS: (state, resp) => {
+    state.status = 'success'
+    Vue.set(state, 'currentLessons', resp)
   },
   LESSON_ERROR: (state) => {
     state.status = 'error'

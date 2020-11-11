@@ -99,7 +99,7 @@ const generator = require('generate-password')
 
 export default {
   layout: 'dashboard',
-  middleware: 'authenticated',
+  middleware: 'not-authenticated',
   data() {
     return {
       newUser: {

@@ -78,6 +78,7 @@ export default {
       serverState: '',
     }
   },
+  middleware: 'authenticated',
   methods: {
     ...mapActions({
       authRequest: 'auth/AUTH_REQUEST',
