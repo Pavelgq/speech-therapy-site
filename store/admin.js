@@ -37,6 +37,33 @@ export const actions = {
     console.log(res.data)
     commit('ADMIN_ALL_SUCCESS', res.data)
   },
+  async USER_UPDATE({ commit, dispatch }, newData) {
+    await commit('ADMIN_REQUEST')
+    const token = localStorage.getItem('user-token')
+    const res = await this.$axios({
+      url: `user/${newData.id}`,
+      method: 'PUT',
+      data: newData,
+      headers: { Authorization: `${token}` },
+    }).catch(() => {
+      commit('ADMIN_ERROR')
+      dispatch('auth/AUTH_LOGOUT', null, { root: true })
+    })
+    commit('ADMIN_UPDATE_SUCCESS', res.data)
+  },
+  async USER_DELETE({ commit, dispatch }, id) {
+    await commit('ADMIN_REQUEST')
+    const token = localStorage.getItem('user-token')
+    const res = await this.$axios({
+      url: `user/${id}`,
+      method: 'DELETE',
+      headers: { Authorization: `${token}` },
+    }).catch(() => {
+      commit('ADMIN_ERROR')
+      dispatch('auth/AUTH_LOGOUT', null, { root: true })
+    })
+    commit('ADMIN_DELETE_SUCCESS', res.data)
+  },
 }
 
 export const mutations = {
@@ -46,6 +73,14 @@ export const mutations = {
   ADMIN_ADD_SUCCESS: (state, resp) => {
     state.status = 'success'
     Vue.set(state, 'message', resp)
+  },
+  ADMIN_UPDATE_SUCCESS: (state, resp) => {
+    state.status = 'success'
+    Vue.set(state, 'message', resp)
+  },
+  ADMIN_DELETE_SUCCESS: (state, resp) => {
+    state.status = 'success'
+    state.usersList[resp._id] = resp
   },
   ADMIN_ALL_SUCCESS: (state, resp) => {
     state.status = 'success'

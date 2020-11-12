@@ -70,25 +70,25 @@ export default {
       tabs: [
         {
           title: 'Профиль',
-          icon: '',
+          icon: 'mdi-badge-account-horizontal-outline',
           route: '/room',
           access: 'all',
         },
         {
           title: 'Добавить ученика',
-          icon: '',
+          icon: 'mdi-plus',
           route: '/add-user',
           access: 'admin',
         },
         {
           title: 'Список учеников',
-          icon: '',
+          icon: 'mdi-clipboard-list-outline',
           route: '/all-users',
           access: 'admin',
         },
         {
           title: 'Прогресc',
-          icon: '',
+          icon: 'mdi-chart-bell-curve',
           route: '/progress',
           access: 'user',
         },

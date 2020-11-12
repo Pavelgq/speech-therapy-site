@@ -36,8 +36,8 @@
                 required
               ></v-select>
               <v-text-field
-                ref="schoolClass"
-                v-model="newUser.schoolClass"
+                ref="classGroup"
+                v-model="newUser.classGroup"
                 :rules="[rules.required]"
                 :error-messages="errorMessages"
                 label="Класс"
@@ -80,9 +80,9 @@
               </v-card-title>
               <v-card-text>
                 <p>Email: {{ newUser.email }}</p>
-                <p>Пароль: {{ newUser.password }}</p>
+                <p>Пароль: {{ password }}</p>
               </v-card-text>
-              <v-btn color="green darken-1" text @click="dialog = false">
+              <v-btn color="green darken-1" text @click="dialogClose">
                 ОК
               </v-btn>
             </v-card>
@@ -107,7 +107,7 @@ export default {
         lastName: '',
         email: '',
         sex: '',
-        schoolClass: '',
+        classGroup: '',
       },
       sexItems: ['м', 'ж'],
       rules: {
@@ -122,6 +122,7 @@ export default {
       formHasErrors: false,
       serverState: '',
       dialog: false,
+      password: 'no',
     }
   },
   watch: {
@@ -138,6 +139,7 @@ export default {
       this.formHasErrors = false
 
       Object.keys(this.newUser).forEach((f) => {
+        console.log(f, this.$refs[f])
         this.$refs[f].reset()
       })
     },
@@ -152,12 +154,17 @@ export default {
       })
 
       if (!this.formHasErrors) {
-        this.newUser.login = `${this.newUser.firstName}${this.newUser.lastName}${this.newUser.schoolClass}`
-        this.newUser.password = generator.generate({
+        const result = {}
+        for (const key in this.newUser) {
+          result[key] = this.newUser[key]
+        }
+        result.login = `${this.newUser.firstName}${this.newUser.lastName}${this.newUser.classGroup}`
+        this.password = generator.generate({
           length: 7,
           numbers: true,
         })
-        this.addUser(this.newUser)
+        result.password = this.password
+        this.addUser(result)
           .then((res) => {
             this.dialog = true
             this.serverState = ''
@@ -166,6 +173,10 @@ export default {
             this.serverState = 'Сервер не отвечает, попробуйте позже'
           })
       }
+    },
+    dialogClose() {
+      this.dialog = false
+      this.resetForm()
     },
   },
 }

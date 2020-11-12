@@ -1,7 +1,21 @@
 <template>
   <v-main>
     <v-container justify-center fluid>
+      <v-btn class="ma-2" color="primary" dark>
+        Изменить<v-icon dark right> mdi-wrench </v-icon>
+      </v-btn>
+
+      <v-btn class="ma-2" color="red" dark @click="dialogDelete = true">
+        Удалить
+        <v-icon dark right> mdi-cancel </v-icon>
+      </v-btn>
       <v-flex tag="section">
+        <v-row>
+          <v-col>
+            <UserInfo v-if="status === 'success'" :data="getUserData" />
+            <v-progress-circular v-else indeterminate></v-progress-circular>
+          </v-col>
+        </v-row>
         <v-row>
           <v-col>
             <UserProgress v-if="status === 'success'" :data="getUserData" />
@@ -10,11 +24,26 @@
         </v-row>
         <v-row>
           <v-col>
-            <UserStatistic :data="currentLessons" />
+            <UserStatistic
+              v-if="statusLessons === 'success'"
+              :data="currentLessons"
+            />
+            <v-progress-circular v-else indeterminate></v-progress-circular>
           </v-col>
         </v-row>
       </v-flex>
     </v-container>
+    <v-dialog v-model="dialogDelete" persistent max-width="600px">
+      <v-card>
+        <v-card-title class="headline">
+          Вы уверены, что хотите удалить пользователя?
+        </v-card-title>
+        <v-btn color="green darken-1" text @click="deleteUser"> Да </v-btn>
+        <v-btn color="green darken-1" text @click="dialogDelete = false">
+          Отмена
+        </v-btn>
+      </v-card>
+    </v-dialog>
   </v-main>
 </template>
 
@@ -29,15 +58,22 @@ export default {
   data() {
     return {
       id: '',
+      dialogDelete: false,
+      dialogUpdate: false,
     }
   },
   created() {
+    console.log(this)
     this.id = this.$route.params.id
-    this.getStat()
+    if (this.usersList[this.id]) {
+      this.getStat()
+    } else {
+      this.$router.push('/all-users')
+    }
   },
   computed: {
     ...mapState('admin', ['status', 'usersList']),
-    ...mapState('statistic', ['status', 'currentLessons']),
+    ...mapState('statistic', ['statusLessons', 'currentLessons']),
     getUserData() {
       return this.usersList[this.id]
     },
@@ -46,6 +82,8 @@ export default {
   methods: {
     ...mapActions({
       lessonRequest: 'statistic/LESSON_USER_REQUEST',
+      updateTarget: 'admin/USER_UPDATE',
+      deleteTarget: 'admin/USER_DELETE',
     }),
     getStat() {
       this.lessonRequest(this.id)
@@ -55,6 +93,12 @@ export default {
         .catch((e) => {
           console.log(e)
         })
+    },
+    updateUser() {},
+    deleteUser() {
+      this.deleteTarget(this.id)
+      this.dialogDelete = false
+      this.$router.push('/all-users')
     },
   },
 }

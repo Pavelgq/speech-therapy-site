@@ -3,9 +3,7 @@
     <v-container fluid>
       <v-row xs12 sm6 color="primary">
         <v-col>
-          <v-layout justify-center wrap>
-            <SimpleTable :fields="getFields" />
-          </v-layout>
+          <UserInfo :data="userInfo" />
         </v-col>
       </v-row>
     </v-container>
@@ -36,32 +34,6 @@ export default {
     },
     userInfo() {
       return this.$store.state.user.profile
-    },
-    userName() {
-      return `${this.userInfo.firstName} ${this.userInfo.lastName}`
-    },
-    role() {
-      return this.userInfo.role === 'user' ? 'Ученик' : 'Администратор'
-    },
-    getFields() {
-      return [
-        {
-          name: 'ФИО',
-          value: this.userName,
-        },
-        {
-          name: 'Статус',
-          value: this.role,
-        },
-        {
-          name: 'E-mail',
-          value: this.userInfo.email,
-        },
-        {
-          name: 'Дата регистрации',
-          value: new Date(this.userInfo.createdAt).toLocaleDateString(),
-        },
-      ]
     },
   },
   middleware: 'not-authenticated',

@@ -10,7 +10,8 @@
         </v-row>
         <v-row>
           <v-col>
-            <UserStatistic :data="lessons" />
+            <UserStatistic v-if="statusLessons === 'success'" :data="lessons" />
+            <v-progress-circular v-else indeterminate></v-progress-circular>
           </v-col>
         </v-row>
       </v-flex>
@@ -35,7 +36,7 @@ export default {
 
   computed: {
     ...mapState('user', ['status', 'profile']),
-    ...mapState('statistic', ['status', 'lessons']),
+    ...mapState('statistic', ['statusLessons', 'lessons']),
     userInfo() {
       return this.profile
     },
@@ -47,6 +48,7 @@ export default {
     // if (!this.$store.user) {
     //   this.getInfo()
     // }
+    console.log(this)
     if (!this.$store.lesson) {
       this.getStat()
     }

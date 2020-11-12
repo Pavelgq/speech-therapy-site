@@ -1,6 +1,10 @@
 import Vue from 'vue'
 
-export const state = () => ({ status: '', lessons: {}, currentLessons: {} })
+export const state = () => ({
+  statusLessons: '',
+  lessons: {},
+  currentLessons: {},
+})
 
 export const getters = {
   getLessons: (state) => state.lessons,
@@ -26,9 +30,8 @@ export const actions = {
     await commit('LESSON_REQUEST')
     const token = localStorage.getItem('user-token')
     const res = await this.$axios({
-      url: 'lesson/current',
-      data: id,
-      method: 'post',
+      url: `lesson/${id}`,
+      method: 'get',
       headers: { Authorization: `${token}` },
     }).catch(() => {
       commit('LESSON_ERROR')
@@ -40,18 +43,18 @@ export const actions = {
 
 export const mutations = {
   LESSON_REQUEST: (state) => {
-    state.status = 'loading'
+    state.statusLessons = 'loading'
   },
   LESSON_SUCCESS: (state, resp) => {
-    state.status = 'success'
+    state.statusLessons = 'success'
     Vue.set(state, 'lessons', resp)
   },
   LESSON_DATA_SUCCESS: (state, resp) => {
-    state.status = 'success'
+    state.statusLessons = 'success'
     Vue.set(state, 'currentLessons', resp)
   },
   LESSON_ERROR: (state) => {
-    state.status = 'error'
+    state.statusLessons = 'error'
   },
   AUTH_LOGOUT: (state) => {
     state.lessons = {}

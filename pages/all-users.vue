@@ -21,20 +21,6 @@
         </template>
       </v-data-table>
     </v-card>
-    <!-- <v-simple-table class="table">
-      <div class="text-center title">{{ title }}</div>
-      <template v-slot:default>
-        <thead>
-          <tr>
-            <th class="text-left">Характеристика</th>
-            <th class="text-left">Показатель</th>
-          </tr>
-        </thead>
-      </template>
-    </v-simple-table>
-    <v-flex v-for="(value, name) in usersList" :key="name">
-      <UserCard :id="name" :data="value" />
-    </v-flex> -->
   </v-main>
 </template>
 
