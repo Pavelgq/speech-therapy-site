@@ -1,7 +1,7 @@
 <template>
   <v-main>
     <v-container justify-center fluid>
-      <v-btn class="ma-2" color="primary" dark>
+      <v-btn class="ma-2" color="primary" dark @click="dialogUpdate = true">
         Изменить<v-icon dark right> mdi-wrench </v-icon>
       </v-btn>
 
@@ -33,6 +33,13 @@
         </v-row>
       </v-flex>
     </v-container>
+    <v-dialog v-model="dialogUpdate" persistent max-width="400px">
+      <AddUser
+        :new-user="getUserUpdate"
+        @close-dialog="dialogUpdate = false"
+        @update-user="updateUser"
+      />
+    </v-dialog>
     <v-dialog v-model="dialogDelete" persistent max-width="600px">
       <v-card>
         <v-card-title class="headline">
@@ -49,12 +56,15 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
-
+import AddUser from '@/components/admin/AddUser'
 export default {
   layout: 'dashboard',
   // validate({ params }) {
   //   return /^([0-9]{12,12})$/.test(params.id)
   // },
+  components: {
+    AddUser,
+  },
   data() {
     return {
       id: '',
@@ -77,6 +87,15 @@ export default {
     getUserData() {
       return this.usersList[this.id]
     },
+    getUserUpdate() {
+      return {
+        firstName: this.usersList[this.id].firstName,
+        lastName: this.usersList[this.id].lastName,
+        email: this.usersList[this.id].email,
+        sex: this.usersList[this.id].sex,
+        classGroup: this.usersList[this.id].classGroup,
+      }
+    },
   },
   middleware: 'refresh',
   methods: {
@@ -86,15 +105,16 @@ export default {
       deleteTarget: 'admin/USER_DELETE',
     }),
     getStat() {
-      this.lessonRequest(this.id)
-        .then((res) => {
-          console.log(res)
-        })
-        .catch((e) => {
-          console.log(e)
-        })
+      this.lessonRequest(this.id).catch((e) => {
+        console.log(e)
+      })
     },
-    updateUser() {},
+    updateUser(obj) {
+      obj.id = this.id
+      this.updateTarget(obj).then(() => {
+        this.dialogUpdate = false
+      })
+    },
     deleteUser() {
       this.deleteTarget(this.id)
       this.dialogDelete = false

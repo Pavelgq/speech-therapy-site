@@ -76,11 +76,12 @@ export const mutations = {
   },
   ADMIN_UPDATE_SUCCESS: (state, resp) => {
     state.status = 'success'
-    Vue.set(state, 'message', resp)
+    state.usersList[resp._id] = resp
   },
   ADMIN_DELETE_SUCCESS: (state, resp) => {
     state.status = 'success'
-    state.usersList[resp._id] = resp
+    delete state.usersList[resp._id]
+    Vue.set(state, 'message', resp)
   },
   ADMIN_ALL_SUCCESS: (state, resp) => {
     state.status = 'success'
