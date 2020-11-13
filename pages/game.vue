@@ -35,13 +35,14 @@ export default {
   middleware: 'authenticated',
   mounted() {
     this.$refs.cont.focus()
-    console.log(this.profile)
     if (!this.$store.user) {
       this.userRequest()
         .then(() => {
           const app = new App(this.$refs.root, this.$store.state.user.profile)
           app.init()
           app.view.dispatch('exitGame', this.exit)
+          app.dispatch('updateUser', this.updateUserData)
+          app.dispatch('addLesson', this.addLessonData)
         })
         .catch((e) => {
           this.exit()
@@ -52,7 +53,15 @@ export default {
   methods: {
     ...mapActions({
       userRequest: 'user/USER_REQUEST',
+      userUpdate: 'user/USER_UPDATE',
+      lessonAdd: 'statistic/LESSON_ADD',
     }),
+    updateUserData(obj) {
+      this.userUpdate(obj).catch((e) => console.log(e)) // В obj должен присутствовать _id
+    },
+    addLessonData(obj) {
+      this.lessonAdd(obj).catch((e) => console.log(e))
+    },
     exit() {
       this.$router.push('/room')
     },

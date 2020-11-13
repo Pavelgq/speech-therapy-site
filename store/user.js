@@ -21,6 +21,20 @@ export const actions = {
     })
     commit('USER_SUCCESS', res.data)
   },
+  async USER_UPDATE({ commit, dispatch }, newData) {
+    await commit('USER_REQUEST')
+    const token = localStorage.getItem('user-token')
+    const res = await this.$axios({
+      url: `user/${newData.id}`,
+      method: 'PUT',
+      data: newData,
+      headers: { Authorization: `${token}` },
+    }).catch(() => {
+      commit('USER_ERROR')
+      dispatch('auth/AUTH_LOGOUT', null, { root: true })
+    })
+    commit('USER_SUCCESS', res.data)
+  },
 }
 
 export const mutations = {
