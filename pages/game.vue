@@ -19,7 +19,9 @@ export default {
     },
   },
   data() {
-    return {}
+    return {
+      app: {},
+    }
   },
   computed: {
     // ...mapState('user', ['profile']),
@@ -32,22 +34,26 @@ export default {
   //     console.log(this.$store.state.user.profile)
   //   },
   // },
-  middleware: 'authenticated',
+  middleware: 'not-authenticated',
   mounted() {
     this.$refs.cont.focus()
     if (!this.$store.user) {
       this.userRequest()
         .then(() => {
-          const app = new App(this.$refs.root, this.$store.state.user.profile)
-          app.init()
-          app.view.dispatch('exitGame', this.exit)
-          app.dispatch('updateUser', this.updateUserData)
-          app.dispatch('addLesson', this.addLessonData)
+          this.app = new App(this.$refs.root, this.$store.state.user.profile)
+          this.app.init()
+          this.app.view.dispatch('exitGame', this.exit)
+          this.app.dispatch('updateUser', this.updateUserData)
+          this.app.dispatch('addLesson', this.addLessonData)
         })
         .catch((e) => {
           this.exit()
         })
     }
+  },
+
+  beforeDestroy() {
+    this.app.exit()
   },
 
   methods: {

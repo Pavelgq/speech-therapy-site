@@ -25,8 +25,8 @@ export const actions = {
     await commit('USER_REQUEST')
     const token = localStorage.getItem('user-token')
     const res = await this.$axios({
-      url: `user/${newData.id}`,
-      method: 'PUT',
+      url: `user/change-data`,
+      method: 'post',
       data: newData,
       headers: { Authorization: `${token}` },
     }).catch(() => {

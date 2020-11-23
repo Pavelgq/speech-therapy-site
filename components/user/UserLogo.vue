@@ -17,12 +17,18 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   props: {
     userName: String,
   },
   methods: {
+    ...mapActions({
+      logoutUser: 'auth/AUTH_LOGOUT',
+    }),
     logout() {
+      this.logoutUser().catch((e) => console.log(e))
       localStorage.removeItem('user-token')
       this.$router.push('/')
     },

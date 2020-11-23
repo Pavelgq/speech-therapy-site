@@ -33,7 +33,7 @@
               color="red darken-3"
               :disabled="!valid"
               class="mr-4"
-              @click="start"
+              @click="startGame"
             >
               Начать урок
             </v-btn>
@@ -132,7 +132,7 @@ export default {
           this.exit()
         })
     },
-    start() {
+    startGame() {
       this.$router.push('/game')
     },
     exit() {

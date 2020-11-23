@@ -64,7 +64,7 @@ export const mutations = {
     Vue.set(state, 'lessons', resp)
   },
   LESSON_ADD: (state, resp) => {
-    state.statusLessons = 'succes'
+    state.statusLessons = 'success'
     console.log(resp)
   },
   LESSON_DATA_SUCCESS: (state, resp) => {
