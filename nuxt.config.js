@@ -87,12 +87,9 @@ export default {
     credentials: false,
     process: true,
   },
-  serverMiddleware: [
-    {
-      path: '/api',
-      handler: './node_modules/speech-therapy-back/src/index.js',
-    },
-  ],
+  serverMiddleware: {
+    '/api': '~/api',
+  },
   // proxy: {
   //   '/api': {
   //     target: 'http://localhost::3000',

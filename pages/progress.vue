@@ -44,7 +44,7 @@ export default {
       return `${this.userInfo.firstName} ${this.userInfo.lastName}`
     },
   },
-  created() {
+  mounted() {
     // if (!this.$store.user) {
     //   this.getInfo()
     // }

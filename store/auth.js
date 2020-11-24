@@ -37,7 +37,9 @@ export const actions = {
       method: 'POST',
     }).catch((err) => {
       commit('AUTH_ERROR', err)
-      localStorage.removeItem('user-token')
+      if (process.browser) {
+        localStorage.removeItem('user-token')
+      }
       return err
     })
     if (res.data.token) {
@@ -50,14 +52,16 @@ export const actions = {
   AUTH_LOGOUT: ({ commit }) => {
     return new Promise((resolve) => {
       commit('AUTH_LOGOUT')
-      localStorage.removeItem('user-token')
+      if (process.browser) {
+        localStorage.removeItem('user-token')
+      }
       resolve()
     })
   },
 }
 
 export const state = () => ({
-  token: localStorage.getItem('user-token') || '',
+  token: process.browser ? localStorage.getItem('user-token') : '',
   status: '',
   hasLoadedOnce: false,
 })

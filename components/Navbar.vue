@@ -114,7 +114,7 @@ export default {
       })
     },
   },
-  created() {
+  mounted() {
     if (!this.$store.user) {
       this.getInfo()
     }
