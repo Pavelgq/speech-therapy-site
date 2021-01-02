@@ -37,6 +37,7 @@ export default {
   middleware: 'not-authenticated',
   mounted() {
     this.$refs.cont.focus()
+    console.log(this.$store.user)
     if (!this.$store.user) {
       this.userRequest()
         .then(() => {
@@ -53,7 +54,8 @@ export default {
   },
 
   beforeDestroy() {
-    this.app.exit()
+    // this.app.exit()
+    this.app.view.dispatch('exitGame', this.exit)
   },
 
   methods: {

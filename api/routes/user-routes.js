@@ -53,7 +53,7 @@ userRouter.post(
   '/login',
   async(async (req, res, next) => {
     console.log(req.body)
-    await passport.authenticate('local', function (_err, user) {
+    await passport.authenticate('local', (_err, user) => {
       if (user === false) {
         console.log('login failed')
         res.send('Login failed')
