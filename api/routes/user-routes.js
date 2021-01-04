@@ -55,8 +55,7 @@ userRouter.post(
     console.log(req.body)
     await passport.authenticate('local', (_err, user) => {
       if (user === false) {
-        console.log('login failed')
-        res.send('Login failed')
+        res.send('failed')
       } else {
         // --payload - info to put in the JWT
         const payload = {

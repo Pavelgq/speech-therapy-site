@@ -65,7 +65,7 @@ import { mapActions, mapState } from 'vuex'
 export default {
   data() {
     return {
-      drawer: false,
+      drawer: true,
       valid: true,
       tabs: [
         {

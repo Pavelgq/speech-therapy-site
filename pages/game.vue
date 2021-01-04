@@ -10,23 +10,24 @@
 
 <script>
 import App from 'speech-therapy-games'
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 export default {
-  props: {
-    user: {
-      type: Object,
-    },
-  },
+  // props: {
+  //   user: {
+  //     type: Object,
+  //     required: false,
+  //   },
+  // },
   data() {
     return {
       app: {},
     }
   },
   computed: {
-    // ...mapState('user', ['profile']),
+    ...mapState('user', ['status', 'profile']),
     userInfo: () => {
-      return this.$store.state.user.profile
+      return this.profile
     },
   },
   // watch: {
@@ -36,26 +37,25 @@ export default {
   // },
   middleware: 'not-authenticated',
   mounted() {
+    console.log(this.status, this.profile)
     this.$refs.cont.focus()
-    console.log(this.$store.user)
-    if (!this.$store.user) {
+    if (!this.status) {
       this.userRequest()
         .then(() => {
-          this.app = new App(this.$refs.root, this.$store.state.user.profile)
-          this.app.init()
-          this.app.view.dispatch('exitGame', this.exit)
-          this.app.dispatch('updateUser', this.updateUserData)
-          this.app.dispatch('addLesson', this.addLessonData)
+          this.createLesson()
         })
         .catch((e) => {
           this.exit()
         })
+    } else {
+      this.createLesson()
     }
   },
 
   beforeDestroy() {
-    // this.app.exit()
-    this.app.view.dispatch('exitGame', this.exit)
+    // вызывть метод exit перед уничтожением компонента
+    this.app.exit()
+    // this.app.view.dispatch('exitGame', this.exit)
   },
 
   methods: {
@@ -72,6 +72,13 @@ export default {
     },
     exit() {
       this.$router.push('/room')
+    },
+    createLesson() {
+      this.app = new App(this.$refs.root, this.profile)
+      this.app.init()
+      this.app.view.dispatch('exitGame', this.exit)
+      this.app.dispatch('updateUser', this.updateUserData)
+      this.app.dispatch('addLesson', this.addLessonData)
     },
   },
 }

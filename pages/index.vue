@@ -90,8 +90,13 @@ export default {
       const { email, password } = this.form
       this.authRequest({ email, password })
         .then((res) => {
-          this.$router.push('/room')
-          this.serverState = ''
+          console.log(res.data)
+          if (res.data === 'failed') {
+            this.serverState = 'Введены неверные данные'
+          } else {
+            this.$router.push('/room')
+            this.serverState = ''
+          }
         })
         .catch((e) => {
           this.serverState = 'Сервер не отвечает, попробуйте позже'

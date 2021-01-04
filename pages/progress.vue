@@ -74,12 +74,6 @@ export default {
         this.exit()
       })
     },
-    start() {
-      this.$router.push('/game')
-    },
-    exit() {
-      this.$router.push('/')
-    },
   },
 }
 </script>
