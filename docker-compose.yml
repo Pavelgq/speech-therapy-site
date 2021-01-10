@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+ db:
+    image: mongo
+    volumes:
+      - ./db:/data/db
+  node:
+    depends_on:
+      - db
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "${SERVER_PORT}:3001"
+      - "${CLIENT_PORT}:3000"
+    volumes:
+      - ./:/home/default
