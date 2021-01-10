@@ -1,18 +1,47 @@
-version: '3'
+version: "3"
+
+volumes:
+  mongodb_volume:
 
 services:
- db:
-    image: mongo
+  nginx:
+    image: nginx:latest
+    # Пробрасываем порты 80 для http и 443 для https
+    ports:
+      - "80:80"
+      - "443:443"
+    # Опциональный параметр с именем контейнера
+    container_name: proxy_nginx
     volumes:
-      - ./db:/data/db
-  node:
-    depends_on:
-      - db
-    build:
+      # Используем свой nginx конфиг, он заменит дефолтный в контейнере
+      - ./nginx:/etc/nginx/conf.d
+      # Монтируем папку с логами на хост машину для более удобного доступа
+      - ./logs:/var/log/nginx/
+  db:
+      image: mongo
+      volumes:
+        - ./db:/data/db
+  nuxt:
+   build:
       context: ./
       dockerfile: Dockerfile
-    ports:
-      - "${SERVER_PORT}:3001"
-      - "${CLIENT_PORT}:3000"
-    volumes:
-      - ./:/home/default
+   container_name: nuxt_app
+   # Также пробрасываем порт на котором висит приложение
+   ports:
+     - "3000:3000"
+
+#  db:
+#     image: mongo
+#     volumes:
+#       - ./db:/data/db
+#   node:
+#     depends_on:
+#       - db
+#     build:
+#       context: ./
+#       dockerfile: Dockerfile
+#     ports:
+#       - "${SERVER_PORT}:3001"
+#       - "${CLIENT_PORT}:3000"
+#     volumes:
+#       - ./:/home/default
