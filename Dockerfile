@@ -1,7 +1,5 @@
 FROM node:latest
 
-ENV NODE_ENV production
-
 RUN mkdir -p /usr/src/nuxt-app
 WORKDIR /usr/src/nuxt-app
 
